@@ -74,11 +74,15 @@ mean(df_high_density$number_of_rf_lesions_pvi)
 sd(df_high_density$number_of_rf_lesions_pvi)
 
 # test p = 0.89
-wilcox.test(df_close$number_of_rf_lesions_pvi, df_high_density$number_of_rf_lesions_pvi)
+wilcox.test(
+  df_close$number_of_rf_lesions_pvi,
+  df_high_density$number_of_rf_lesions_pvi
+)
 
 
 # additional_lesions_hd --------------------------------------------------------
-df_high_density$additional_lesions_hd <- as.numeric(df_high_density$additional_lesions_hd)
+df_high_density$additional_lesions_hd <-
+  as.numeric(df_high_density$additional_lesions_hd)
 
 # high_density 7 +/- 6.83
 mean(df_high_density$additional_lesions_hd)
@@ -91,8 +95,10 @@ sum(df_close$first_pass_rspv) / nrow(df_close)
 sum(df_high_density$first_pass_rspv) / nrow(df_high_density)
 
 # proportions test, p = 0.5
-prop.test(x = c(sum(df_close$first_pass_rspv), sum(df_high_density$first_pass_rspv)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+  x = c(sum(df_close$first_pass_rspv), sum(df_high_density$first_pass_rspv)),
+  n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # first_pass_ripv --------------------------------------------------------------
@@ -101,8 +107,10 @@ sum(df_close$first_pass_ripv) / nrow(df_close)
 sum(df_high_density$first_pass_ripv) / nrow(df_high_density)
 
 # proportions test, p = 0.7
-prop.test(x = c(sum(df_close$first_pass_ripv), sum(df_high_density$first_pass_ripv)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+  x = c(sum(df_close$first_pass_ripv), sum(df_high_density$first_pass_ripv)),
+  n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # first_pass_lspv --------------------------------------------------------------
@@ -111,8 +119,10 @@ sum(df_close$first_pass_lspv) / nrow(df_close)
 sum(df_high_density$first_pass_lspv) / nrow(df_high_density)
 
 # proportions test, p = 0.19
-prop.test(x = c(sum(df_close$first_pass_lspv), sum(df_high_density$first_pass_lspv)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+  x = c(sum(df_close$first_pass_lspv), sum(df_high_density$first_pass_lspv)),
+  n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # first_pass_lipv --------------------------------------------------------------
@@ -121,8 +131,10 @@ sum(df_close$first_pass_lipv) / nrow(df_close)
 sum(df_high_density$first_pass_lipv) / nrow(df_high_density)
 
 # proportions test, p = 1
-prop.test(x = c(sum(df_close$first_pass_lipv), sum(df_high_density$first_pass_lipv)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+  x = c(sum(df_close$first_pass_lipv), sum(df_high_density$first_pass_lipv)),
+  n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # first_pass_per_patient -------------------------------------------------------
@@ -131,5 +143,10 @@ sum(df_close$first_pass_per_patient) / nrow(df_close)
 sum(df_high_density$first_pass_per_patient) / nrow(df_high_density)
 
 # proportions test, p = 0.16
-prop.test(x = c(sum(df_close$first_pass_per_patient), sum(df_high_density$first_pass_per_patient)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+  x = c(
+    sum(df_close$first_pass_per_patient),
+    sum(df_high_density$first_pass_per_patient)
+  ),
+  n = c(nrow(df_close), nrow(df_high_density))
+)

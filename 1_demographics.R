@@ -34,8 +34,10 @@ sum(df_close$gender_numeric) / nrow(df_close)
 sum(df_high_density$gender_numeric) / nrow(df_high_density)
 
 # proportions test, p = 0.29
-prop.test(x = c(sum(df_close$gender_numeric), sum(df_high_density$gender_numeric)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+    x = c(sum(df_close$gender_numeric), sum(df_high_density$gender_numeric)),
+    n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # bmi --------------------------------------------------------------------------
@@ -82,7 +84,7 @@ wilcox.test(df_close$la_size, df_high_density$la_size)
 mean(df_close$lvedvi)
 sd(df_close$lvedvi)
 
-# high_density 58/89 +/- 8.26
+# high_density 58.89 +/- 8.26
 # drop NA
 high_density_lvedvi <- df_high_density$lvedvi[!is.na(df_high_density$lvedvi)]
 mean(high_density_lvedvi)
@@ -98,8 +100,10 @@ sum(df_close$anticoagulant_numeric) / nrow(df_close)
 sum(df_high_density$anticoagulant_numeric) / nrow(df_high_density)
 
 # proportions test, p = 1
-prop.test(x = c(sum(df_close$anticoagulant_numeric), sum(df_high_density$anticoagulant_numeric)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+    x = c(sum(df_close$anticoagulant_numeric), sum(df_high_density$anticoagulant_numeric)),
+    n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # probnp -----------------------------------------------------------------------
@@ -124,8 +128,10 @@ sum(df_close$chf) / nrow(df_close)
 sum(df_high_density$chf) / nrow(df_high_density)
 
 # proportions test, p = 1
-prop.test(x = c(sum(df_close$chf), sum(df_high_density$chf)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+    x = c(sum(df_close$chf), sum(df_high_density$chf)),
+    n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # hypertension_history ---------------------------------------------------------
@@ -134,8 +140,10 @@ sum(df_close$hypertension_history) / nrow(df_close)
 sum(df_high_density$hypertension_history) / nrow(df_high_density)
 
 # proportions test, p = 0.44
-prop.test(x = c(sum(df_close$hypertension_history), sum(df_high_density$hypertension_history)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+    x = c(sum(df_close$hypertension_history), sum(df_high_density$hypertension_history)),
+    n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # age_75 -----------------------------------------------------------------------
@@ -144,8 +152,10 @@ sum(df_close$age_75) / nrow(df_close)
 sum(df_high_density$age_75) / nrow(df_high_density)
 
 # proportions test, p = 0.35
-prop.test(x = c(sum(df_close$age_75), sum(df_high_density$age_75)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+    x = c(sum(df_close$age_75), sum(df_high_density$age_75)),
+    n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # diabetes_history -------------------------------------------------------------
@@ -154,8 +164,10 @@ sum(df_close$diabetes_history) / nrow(df_close)
 sum(df_high_density$diabetes_history) / nrow(df_high_density)
 
 # proportions test, p = 1
-prop.test(x = c(sum(df_close$diabetes_history), sum(df_high_density$diabetes_history)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+    x = c(sum(df_close$diabetes_history), sum(df_high_density$diabetes_history)),
+    n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # stroke -----------------------------------------------------------------------
@@ -164,10 +176,12 @@ sum(df_close$stroke) / nrow(df_close)
 sum(df_high_density$stroke) / nrow(df_high_density)
 
 # proportions test, p = 1
-prop.test(x = c(sum(df_close$stroke), sum(df_high_density$stroke)),
-          n = c(nrow(df_close), nrow(df_high_density)))
-
+prop.test(
+    x = c(sum(df_close$stroke), sum(df_high_density$stroke)),
+    n = c(nrow(df_close), nrow(df_high_density))
+)
 # 1 patient has stroke, maybe remove?
+
 
 # vascular_disease -------------------------------------------------------------
 # close: 0.1, high_density: 0.03
@@ -175,8 +189,10 @@ sum(df_close$vascular_disease) / nrow(df_close)
 sum(df_high_density$vascular_disease) / nrow(df_high_density)
 
 # proportions test, p = 0.6
-prop.test(x = c(sum(df_close$vascular_disease), sum(df_high_density$vascular_disease)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+    x = c(sum(df_close$vascular_disease), sum(df_high_density$vascular_disease)),
+    n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # age_65_74 --------------------------------------------------------------------
@@ -185,8 +201,10 @@ sum(df_close$age_65_74) / nrow(df_close)
 sum(df_high_density$age_65_74) / nrow(df_high_density)
 
 # proportions test, p = 0.43
-prop.test(x = c(sum(df_close$age_65_74), sum(df_high_density$age_65_74)),
-          n = c(nrow(df_close), nrow(df_high_density)))
+prop.test(
+    x = c(sum(df_close$age_65_74), sum(df_high_density$age_65_74)),
+    n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # cha2ds2vasc ------------------------------------------------------------------
@@ -198,5 +216,5 @@ sd(df_close$cha2ds2vasc)
 mean(df_high_density$cha2ds2vasc)
 sd(df_high_density$cha2ds2vasc)
 
-# test p = 0.054
+# test p = 0.05
 wilcox.test(df_close$cha2ds2vasc, df_high_density$cha2ds2vasc)
