@@ -1,5 +1,7 @@
 library(tidyverse)
 
+source("utils.R")
+
 
 # preprocessing ----------------------------------------------------------------
 df_all <- read.csv("data/cleaned.csv", sep = ";")
@@ -90,9 +92,12 @@ sd(df_high_density$additional_lesions_hd)
 
 
 # first_pass_rspv --------------------------------------------------------------
-# close: 0.77, high_density: 0.87
+# close: 0.77 +/- 0.08, high_density: 0.87 +/- 0.06
 sum(df_close$first_pass_rspv) / nrow(df_close)
+boot_sd(df_close$first_pass_rspv)
+
 sum(df_high_density$first_pass_rspv) / nrow(df_high_density)
+boot_sd(df_high_density$first_pass_rspv)
 
 # proportions test, p = 0.5
 prop.test(
@@ -102,9 +107,12 @@ prop.test(
 
 
 # first_pass_ripv --------------------------------------------------------------
-# close: 0.83, high_density: 0.9
+# close: 0.83 +/- 0.07, high_density: 0.9 +/- 0.05
 sum(df_close$first_pass_ripv) / nrow(df_close)
+boot_sd(df_close$first_pass_ripv)
+
 sum(df_high_density$first_pass_ripv) / nrow(df_high_density)
+boot_sd(df_high_density$first_pass_ripv)
 
 # proportions test, p = 0.7
 prop.test(
@@ -114,9 +122,12 @@ prop.test(
 
 
 # first_pass_lspv --------------------------------------------------------------
-# close: 0.83, high_density: 0.97
+# close: 0.83 +/- 0.07, high_density: 0.97 +/- 0.03
 sum(df_close$first_pass_lspv) / nrow(df_close)
+boot_sd(df_close$first_pass_lspv)
+
 sum(df_high_density$first_pass_lspv) / nrow(df_high_density)
+boot_sd(df_high_density$first_pass_lspv)
 
 # proportions test, p = 0.19
 prop.test(
@@ -126,9 +137,12 @@ prop.test(
 
 
 # first_pass_lipv --------------------------------------------------------------
-# close: 1, high_density: 0.97
+# close: 1, high_density: 0.97 +/- 0.03
 sum(df_close$first_pass_lipv) / nrow(df_close)
+boot_sd(df_close$first_pass_lipv)
+
 sum(df_high_density$first_pass_lipv) / nrow(df_high_density)
+boot_sd(df_high_density$first_pass_lipv)
 
 # proportions test, p = 1
 prop.test(
@@ -138,9 +152,12 @@ prop.test(
 
 
 # first_pass_per_patient -------------------------------------------------------
-# close: 0.6, high_density: 0.8
+# close: 0.6 +/- 0.09, high_density: 0.8 +/- 0.07
 sum(df_close$first_pass_per_patient) / nrow(df_close)
+boot_sd(df_close$first_pass_per_patient)
+
 sum(df_high_density$first_pass_per_patient) / nrow(df_high_density)
+boot_sd(df_high_density$first_pass_per_patient)
 
 # proportions test, p = 0.16
 prop.test(

@@ -1,4 +1,6 @@
 library(tidyverse)
+library(survival)
+library(survminer)
 
 
 # preprocessing ----------------------------------------------------------------
@@ -42,7 +44,32 @@ prop.test(
 )
 
 
-# duration between procedure and reintervention ---------------------------------
+# survival analysis ------------------------------------------------------------
+# Create the survival object
+df_all$procedure_type <- factor(df_all$procedure_type)
+df_all$status <- rep(1, nrow(df_all))
+surv_obj <- Surv(time = df_all$diff, event = df_all$status)
+
+# Fit the Kaplan-Meier model
+km_fit <- survfit(surv_obj ~ procedure_type, data = df_all)
+
+# Plot the Kaplan-Meier survival curves
+ggsurvplot(km_fit,
+  data = df_all, pval = TRUE,
+  conf.int = TRUE,
+  legend.labs = c("close", "high density")
+)
+
+# save as a png
+ggsave(
+  "figs/reintervention.png",
+  width = 1920,
+  height = 1080,
+  dpi = 300,
+  units = "px"
+)
+
+# duration between procedure and reintervention --------------------------------
 # close 444.69 +/- 94.71
 mean(df_close$diff)
 sd(df_close$diff)
