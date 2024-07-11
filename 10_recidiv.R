@@ -6,46 +6,32 @@ library(survminer)
 # preprocessing ----------------------------------------------------------------
 df_all <- read.csv("data/cleaned.csv", sep = ";")
 
-# was reintenvention required
-df_all$reintervention <- ifelse(df_all$reintervention_date == "", 0, 1)
-
 # subset
 df_all <- df_all %>%
-  select(procedure_type, procedure_date, reintervention_date)
+  select(procedure_type, procedure_date, recidiv)
 
 # to date, format is dd/mm/yyyy
 df_all$procedure_date <- as.Date(df_all$procedure_date, format = "%d/%m/%Y")
-df_all$reintervention_date <-
-  as.Date(df_all$reintervention_date, format = "%d/%m/%Y")
+df_all$recidiv <-
+  as.Date(df_all$recidiv, format = "%d/%m/%Y")
 
 # drop missing dates
 df_all <- drop_na(df_all)
 
 # diff
-df_all$diff <- df_all$reintervention_date - df_all$procedure_date
+df_all$diff <- df_all$recidiv - df_all$procedure_date
 
 # split
 df_close <- df_all %>% filter(procedure_type == "close")
 df_high_density <- df_all %>% filter(procedure_type == "high_density")
 
 
-# 5 did not require reintervention ---------------------------------------------
-# proprortions test between close and high_density for reintervention
-prop.test(
-  x = c(
-    sum(df_close$reintervention == 1),
-    sum(df_high_density$reintervention == 1)
-  ),
-  n = c(nrow(df_close), nrow(df_high_density))
-)
-
-
-# duration between the procedure and the reintervention ------------------------
-# close 444.69 +/- 94.71
+# duration between the procedure and the recidiv -------------------------------
+# close 224.6 +/- 101.14
 mean(df_close$diff)
 sd(df_close$diff)
 
-# high_density 381.69 +/- 103.71
+# high_density 149.29 +/- 69.37
 mean(df_high_density$diff)
 sd(df_high_density$diff)
 
@@ -68,7 +54,7 @@ ggsurvplot(km_fit,
 
 # save as a png
 ggsave(
-  "figs/reintervention.png",
+  "figs/recidiv.png",
   width = 1920,
   height = 1080,
   dpi = 300,
