@@ -2,7 +2,7 @@ library(tidyverse)
 
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read.csv("data/cleaned.csv", sep = ";")
+df_all <- read.csv("data/cleaned.csv")
 df_all <- drop_na(df_all)
 
 # la_volume_index_12 vs  la_volume_index ---------------------------------------

@@ -4,7 +4,7 @@ source("utils.R")
 
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read.csv("data/cleaned.csv", sep = ";", stringsAsFactors = TRUE)
+df_all <- read.csv("data/cleaned.csv", stringsAsFactors = TRUE)
 
 # gender to 0/1
 df_all$gender_numeric <- as.numeric(df_all$gender) - 1
@@ -31,7 +31,7 @@ wilcox.test(df_close$age, df_high_density$age)
 
 
 # gender -----------------------------------------------------------------------
-# 0 = F, 1 = M, close: 0.5 +/- 0.09 male, high_density: 0.67 +/- 0.09 male
+# 0 = F, 1 = M, close: 50 +/- 9.2 male, high_density: 67.67 +/- 8.67 male
 sum(df_close$gender_numeric) / nrow(df_close)
 boot_sd(df_close$gender_numeric)
 
@@ -100,7 +100,7 @@ wilcox.test(df_close$lvedvi, high_density_lvedvi)
 
 
 # anticoagulant ----------------------------------------------------------------
-# close: 0.83 +/- 0.07, high_density: 0.8 +/- 0.07
+# close: 83.33 +/- 6.83, high_density: 80 +/- 7.3
 sum(df_close$anticoagulant_numeric) / nrow(df_close)
 boot_sd(df_close$anticoagulant_numeric)
 
@@ -134,7 +134,7 @@ wilcox.test(close_probnp, high_density_probnp)
 
 
 # chf --------------------------------------------------------------------------
-# close: 0.03 +/- 0.03, high_density: 0.03 +/- 0.03
+# close: 3.33 +/- 3.27, high_density: 3.33 +/- 3.3
 sum(df_close$chf) / nrow(df_close)
 boot_sd(df_close$chf)
 
@@ -149,7 +149,7 @@ prop.test(
 
 
 # hypertension_history ---------------------------------------------------------
-# close: 0.57 +/- 0.09, high_density: 0.43 +/- 0.09
+# close: 56.67 +/- 8.97, high_density: 43.33 +/- 9.05
 sum(df_close$hypertension_history) / nrow(df_close)
 boot_sd(df_close$hypertension_history)
 
@@ -164,7 +164,7 @@ prop.test(
 
 
 # age_75 -----------------------------------------------------------------------
-# close: 0.13 +/- 0.06, high_density: 0.03 +/- 0.03
+# close: 13.33 +/- 6.21, high_density: 3.33 +/- 3.24
 sum(df_close$age_75) / nrow(df_close)
 boot_sd(df_close$age_75)
 
@@ -179,7 +179,7 @@ prop.test(
 
 
 # diabetes_history -------------------------------------------------------------
-# close: 0.13 +/- 0.06, high_density: 0.1 +/- 0.05
+# close: 13.33 +/- 6.2, high_density: 10 +/- 5.49
 sum(df_close$diabetes_history) / nrow(df_close)
 boot_sd(df_close$diabetes_history)
 
@@ -193,24 +193,8 @@ prop.test(
 )
 
 
-# stroke -----------------------------------------------------------------------
-# close: 0.03 +/- 0.03, high_density: 0
-sum(df_close$stroke) / nrow(df_close)
-boot_sd(df_close$stroke)
-
-sum(df_high_density$stroke) / nrow(df_high_density)
-boot_sd(df_high_density$stroke)
-
-# proportions test, p = 1
-prop.test(
-  x = c(sum(df_close$stroke), sum(df_high_density$stroke)),
-  n = c(nrow(df_close), nrow(df_high_density))
-)
-# 1 patient has stroke, maybe remove?
-
-
 # vascular_disease -------------------------------------------------------------
-# close: 0.1 +/- 0.05, high_density: 0.03 +/- 0.03
+# close: 10 +/- 5.45, high_density: 3.33 +/- 3.25
 sum(df_close$vascular_disease) / nrow(df_close)
 boot_sd(df_close$vascular_disease)
 
@@ -225,7 +209,7 @@ prop.test(
 
 
 # age_65_74 --------------------------------------------------------------------
-# close: 0.5 +/- 0.09, high_density: 0.37 +/- 0.09
+# close: 50 +/- 9.22, high_density: 36.67 +/- 8.7
 sum(df_close$age_65_74) / nrow(df_close)
 boot_sd(df_close$age_65_74)
 

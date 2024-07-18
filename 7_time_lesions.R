@@ -2,7 +2,7 @@ library(tidyverse)
 
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read.csv("data/cleaned.csv", sep = ";")
+df_all <- read.csv("data/cleaned.csv")
 
 # split
 df_close <- df_all %>% filter(procedure_type == "close")

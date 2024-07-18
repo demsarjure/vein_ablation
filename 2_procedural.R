@@ -4,7 +4,7 @@ source("utils.R")
 
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read.csv("data/cleaned.csv", sep = ";")
+df_all <- read.csv("data/cleaned.csv")
 
 # split
 df_close <- df_all %>% filter(procedure_type == "close")
@@ -92,7 +92,7 @@ sd(df_high_density$additional_lesions_hd)
 
 
 # first_pass_rspv --------------------------------------------------------------
-# close: 0.77 +/- 0.08, high_density: 0.87 +/- 0.06
+# close: 76.67 +/- 7.76, high_density: 86.67 +/- 6.19
 sum(df_close$first_pass_rspv) / nrow(df_close)
 boot_sd(df_close$first_pass_rspv)
 
@@ -107,7 +107,7 @@ prop.test(
 
 
 # first_pass_ripv --------------------------------------------------------------
-# close: 0.83 +/- 0.07, high_density: 0.9 +/- 0.05
+# close: 83.33 +/- 6.78, high_density: 90 +/- 5.4
 sum(df_close$first_pass_ripv) / nrow(df_close)
 boot_sd(df_close$first_pass_ripv)
 
@@ -122,7 +122,7 @@ prop.test(
 
 
 # first_pass_lspv --------------------------------------------------------------
-# close: 0.83 +/- 0.07, high_density: 0.97 +/- 0.03
+# close: 83.33 +/- 6.79, high_density: 96.67 +/- 3.27
 sum(df_close$first_pass_lspv) / nrow(df_close)
 boot_sd(df_close$first_pass_lspv)
 
@@ -152,7 +152,7 @@ prop.test(
 
 
 # first_pass_per_patient -------------------------------------------------------
-# close: 0.6 +/- 0.09, high_density: 0.8 +/- 0.07
+# close: 60 +/- 8.88, high_density: 80 +/- 7.37
 sum(df_close$first_pass_per_patient) / nrow(df_close)
 boot_sd(df_close$first_pass_per_patient)
 

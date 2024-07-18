@@ -4,10 +4,7 @@ library(survminer)
 
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read.csv("data/cleaned.csv", sep = ";")
-
-# was reintenvention required
-df_all$reintervention <- ifelse(df_all$reintervention_date == "", 0, 1)
+df_all <- read.csv("data/cleaned.csv")
 
 # subset
 df_all <- df_all %>%
@@ -27,27 +24,6 @@ df_all$diff <- df_all$reintervention_date - df_all$procedure_date
 # split
 df_close <- df_all %>% filter(procedure_type == "close")
 df_high_density <- df_all %>% filter(procedure_type == "high_density")
-
-
-# 5 did not require reintervention ---------------------------------------------
-# proprortions test between close and high_density for reintervention
-prop.test(
-  x = c(
-    sum(df_close$reintervention == 1),
-    sum(df_high_density$reintervention == 1)
-  ),
-  n = c(nrow(df_close), nrow(df_high_density))
-)
-
-
-# duration between the procedure and the reintervention ------------------------
-# close 444.69 +/- 94.71
-mean(df_close$diff)
-sd(df_close$diff)
-
-# high_density 381.69 +/- 103.71
-mean(df_high_density$diff)
-sd(df_high_density$diff)
 
 
 # survival analysis ------------------------------------------------------------

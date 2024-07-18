@@ -3,14 +3,17 @@ library(ggplot2)
 
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read.csv("data/cleaned.csv", sep = ";")
+df_all <- read.csv("data/cleaned.csv")
 
 # subset
 df_all <- df_all %>%
-  select(procedure_type, number_of_isolated_veins)
+  select(procedure_type, number_of_isolated_veins, all_4_veins_isolated)
 
 # drop_na
 df_all <- drop_na(df_all)
+
+# percentage of isolated veins
+df_all$percentage_of_isolated_veins <- df_all$number_of_isolated_veins / 4
 
 # split
 df_close <- df_all %>% filter(procedure_type == "close")
@@ -33,8 +36,36 @@ wilcox.test(
 )
 
 
-# 4 isolated veins closed vs high density --------------------------------------
+# percentage of isolated veins -------------------------------------------------
+# close 80.17 +/- 23.5
+mean(df_close$percentage_of_isolated_veins)
+sd(df_close$percentage_of_isolated_veins)
 
+# high_density 91.35 +/- 18.63
+mean(df_high_density$percentage_of_isolated_veins)
+sd(df_high_density$percentage_of_isolated_veins)
+
+# proportions test, p = 0.29
+prop.test(
+  x = c(sum(df_close$number_of_isolated_veins), sum (df_high_density$number_of_isolated_veins)),
+  n = c(nrow(df_close) * 4, nrow(df_high_density) * 4)
+)
+
+
+# 4 isolated veins closed vs high density --------------------------------------
+# close 44.83 +/- 9.22
+sum(df_close$all_4_veins_isolated) / nrow(df_close)
+boot_sd(df_close$all_4_veins_isolated)
+
+# high_density 76.92 +/- 8.3
+sum(df_high_density$all_4_veins_isolated) / nrow(df_high_density)
+boot_sd(df_high_density$all_4_veins_isolated)
+
+# proportions test, p = 0.03
+prop.test(
+  x = c(sum(df_close$all_4_veins_isolated), sum(df_high_density$all_4_veins_isolated)),
+  n = c(nrow(df_close), nrow(df_high_density))
+)
 
 
 # plot number of isolated veins close vs high density --------------------------
@@ -130,8 +161,8 @@ ggplot(
     color = "black"
   ) +
   scale_fill_manual(values = c("grey25", "grey75")) +
-  ylab("number of isolated veins") +
-  xlab("counts") +
+  ylab("patients") +
+  xlab("number of isolated veins") +
   theme(legend.title = element_blank())
 
 # save as a png
