@@ -1,8 +1,10 @@
 library(tidyverse)
 
+source("utils.R")
+
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read.csv("data/cleaned.csv", sep = ";")
+df_all <- read.csv("data/cleaned.csv")
 
 # r
 df_all$dormant_rspv_rr <- as.numeric(df_all$dormant_rspv_rr)
@@ -26,216 +28,193 @@ df_high_density <- df_all %>% filter(procedure_type == "high_density")
 
 
 # rspv_rr ----------------------------------------------------------------------
-# close: 0.21 +/- 0.07, high_density: 0.03 +/- 0.03
+# close: 6 +/- 2.15, high_density: 1 +/- 0.98
 close <- na.omit(df_close$dormant_rspv_rr)
-sum(close) / length(close)
-boot_sd(close)
+sum(close)
+boot_sd_sum(close)
+sum(close) / length(close) # 21.43%
+
 
 high_density <- na.omit(df_high_density$dormant_rspv_rr)
-sum(high_density) / length(high_density)
-boot_sd(high_density)
+sum(high_density)
+boot_sd_sum(high_density)
+sum(high_density) / length(high_density) # 3.85%
 
-# proportions test, p = 1
-x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
-prop.test(
-  x = x,
-  n = c(length(close), length(high_density))
-)
+# test, p = 0.06
+wilcox.test(close, high_density)
 
 
 # rspv_ra ----------------------------------------------------------------------
-# close: 0.11 +/- 0.06, high_density: 0.08 +/- 0.05
+# close: 3 +/- 1.65, high_density: 2 +/- 1.35
 close <- na.omit(df_close$dormant_rspv_ra)
-sum(close) / length(close)
-boot_sd(close)
+sum(close)
+boot_sd_sum(close)
+sum(close) / length(close) # 10.71%
 
 high_density <- na.omit(df_high_density$dormant_rspv_ra)
-sum(high_density) / length(high_density)
-boot_sd(high_density)
+sum(high_density)
+boot_sd_sum(high_density)
+sum(high_density) / length(high_density) # 7.69%
 
-# proportions test, p = 1
-x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
-prop.test(
-  x = x,
-  n = c(length(close), length(high_density))
-)
+# test, p = 0.72
+wilcox.test(close, high_density)
 
 
 # rspv_rp ----------------------------------------------------------------------
-# close: 0.14 +/- 0.07, high_density: 0.03 +/- 0.03
+# close: 4 +/- 1.85, high_density: 1 +/- 0.98
 close <- na.omit(df_close$dormant_rspv_rp)
-sum(close) / length(close)
-boot_sd(close)
+sum(close)
+boot_sd_sum(close)
+sum(close) / length(close) # 14.29%
 
 high_density <- na.omit(df_high_density$dormant_rspv_rp)
-sum(high_density) / length(high_density)
-boot_sd(high_density)
+sum(high_density)
+boot_sd_sum(high_density)
+sum(high_density) / length(high_density) # 3.85%
 
-# proportions test, p = 0.39
-x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
-prop.test(
-  x = x,
-  n = c(length(close), length(high_density))
-)
+# test, p = 0.19
+wilcox.test(close, high_density)
 
 
 # ripv_ra ----------------------------------------------------------------------
 # close: 0, high_density: 0
 close <- na.omit(df_close$dormant_ripv_ra)
-sum(close) / length(close)
-boot_sd(close)
+sum(close)
+boot_sd_sum(close)
+sum(close) / length(close) # 0%
 
 high_density <- na.omit(df_high_density$dormant_ripv_ra)
-sum(high_density) / length(high_density)
-boot_sd(high_density)
+sum(high_density)
+boot_sd_sum(high_density)
+sum(high_density) / length(high_density) # 0%
 
-# proportions test, p = 1
-x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
-prop.test(
-  x = x,
-  n = c(length(close), length(high_density))
-)
+# test, p = 1
+wilcox.test(close, high_density)
 
 
 # ripv_rp ----------------------------------------------------------------------
-# close: 0.14 +/- 0.07, high_density: 0.08 +/- 0.05
+# close: 4 +/- 1.86, high_density: 2 +/- 1.35
 close <- na.omit(df_close$dormant_ripv_rp)
-sum(close) / length(close)
-boot_sd(close)
+sum(close)
+boot_sd_sum(close)
+sum(close) / length(close) # 14.29%
 
 high_density <- na.omit(df_high_density$dormant_ripv_rp)
-sum(high_density) / length(high_density)
-boot_sd(high_density)
+sum(high_density)
+boot_sd_sum(high_density)
+sum(high_density) / length(high_density) # 7.69%
 
-# proportions test, p = 0.73
-x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
-prop.test(
-  x = x,
-  n = c(length(close), length(high_density))
-)
+# test, p = 0.45
+wilcox.test(close, high_density)
 
 
 # ripv_ri ----------------------------------------------------------------------
 # close: 0, high_density: 0
 close <- na.omit(df_close$dormant_ripv_ri)
-sum(close) / length(close)
-boot_sd(close)
+sum(close)
+boot_sd_sum(close)
+sum(close) / length(close) # 0%
 
 high_density <- na.omit(df_high_density$dormant_ripv_ri)
-sum(high_density) / length(high_density)
-boot_sd(high_density)
+sum(high_density)
+boot_sd_sum(high_density)
+sum(high_density) / length(high_density) # 0%
 
-# proportions test, p = 1
-x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
-prop.test(
-  x = x,
-  n = c(length(close), length(high_density))
-)
+# test, p = 1
+wilcox.test(close, high_density)
 
 
 # lspv_lr ----------------------------------------------------------------------
-# close: 0.03 +/- 0.03, high_density: 0
+# close: 1 +/- 0.98, high_density: 0
 close <- na.omit(df_close$dormant_lspv_lr)
-sum(close) / length(close)
-boot_sd(close)
+sum(close)
+boot_sd_sum(close)
+sum(close) / length(close) # 3.57%
 
 high_density <- na.omit(df_high_density$dormant_lspv_lr)
-sum(high_density) / length(high_density)
-boot_sd(high_density)
+sum(high_density)
+boot_sd_sum(high_density)
+sum(high_density) / length(high_density) # 0%
 
-# proportions test, p = 0.73
-x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
-prop.test(
-  x = x,
-  n = c(length(close), length(high_density))
-)
+# test, p = 0.35
+wilcox.test(close, high_density)
 
 
 # lspv_lrg ---------------------------------------------------------------------
-# close: 0.14 +/- 0.07, high_density: 0.03 +/- 0.03
+# close: 4 +/- 1.86, high_density: 1 +/- 0.98
 close <- na.omit(df_close$dormant_lspv_lrg)
-sum(close) / length(close)
-boot_sd(close)
+sum(close)
+boot_sd_sum(close)
+sum(close) / length(close) # 14.29%
 
 high_density <- na.omit(df_high_density$dormant_lspv_lrg)
-sum(high_density) / length(high_density)
-boot_sd(high_density)
+sum(high_density)
+boot_sd_sum(high_density)
+sum(high_density) / length(high_density) # 3.85%
 
-# proportions test, p = 0.73
-x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
-prop.test(
-  x = x,
-  n = c(length(close), length(high_density))
-)
+# test, p = 0.19
+wilcox.test(close, high_density)
 
 
 # lspv_lp ----------------------------------------------------------------------
-# close: 0.14 +/- 0.08, high_density: 0
+# close: 4 +/- 2.33, high_density: 0
 close <- na.omit(df_close$dormant_lspv_lp)
-sum(close) / length(close)
-boot_sd(close)
+sum(close)
+boot_sd_sum(close)
+sum(close) / length(close) # 14.29%
 
 high_density <- na.omit(df_high_density$dormant_lspv_lp)
-sum(high_density) / length(high_density)
-boot_sd(high_density)
+sum(high_density)
+boot_sd_sum(high_density)
+sum(high_density) / length(high_density) # 0%
 
-# proportions test, p = 0.13
-x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
-prop.test(
-  x = x,
-  n = c(length(close), length(high_density))
-)
+# test, p = 0.09
+wilcox.test(close, high_density)
 
 
 # lipv_la ----------------------------------------------------------------------
-# close: 0.11 +/- 0.06, high_density: 0
+# close: 3 +/- 1.62, high_density: 0
 close <- na.omit(df_close$dormant_lipv_la)
-sum(close) / length(close)
-boot_sd(close)
+sum(close)
+boot_sd_sum(close)
+sum(close) / length(close) # 10.71%
 
 high_density <- na.omit(df_high_density$dormant_lipv_la)
-sum(high_density) / length(high_density)
-boot_sd(high_density)
+sum(high_density)
+boot_sd_sum(high_density)
+sum(high_density) / length(high_density) # 0%
 
-# proportions test, p = 0.26
-x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
-prop.test(
-  x = x,
-  n = c(length(close), length(high_density))
-)
+# test, p = 0.26
+wilcox.test(close, high_density)
 
 
 # lipv_li ----------------------------------------------------------------------
 # close: 0, high_density: 0
 close <- na.omit(df_close$dormant_lipv_li)
-sum(close) / length(close)
-boot_sd(close)
+sum(close)
+boot_sd_sum(close)
+sum(close) / length(close) # 0%
 
 high_density <- na.omit(df_high_density$dormant_lipv_li)
-sum(high_density) / length(high_density)
-boot_sd(high_density)
+sum(high_density)
+boot_sd_sum(high_density)
+sum(high_density) / length(high_density) 
 
-# proportions test, p = 1
-x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
-prop.test(
-  x = x,
-  n = c(length(close), length(high_density))
-)
+# test, p = 1
+wilcox.test(close, high_density)
 
 
 # lipv_lp ----------------------------------------------------------------------
-# close: 0.1 +/- 0.06, high_density: 0
+# close: 3 +/- 1.64, high_density: 0
 close <- na.omit(df_close$dormant_lipv_lp)
-sum(close) / length(close)
-boot_sd(close)
+sum(close)
+boot_sd_sum(close)
+sum(close) / length(close) # 10.71%
 
 high_density <- na.omit(df_high_density$dormant_lipv_lp)
-sum(high_density) / length(high_density)
-boot_sd(high_density)
+sum(high_density)
+boot_sd_sum(high_density)
+sum(high_density) / length(high_density) # 0
 
-# proportions test, p = 0.26
-x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
-prop.test(
-  x = x,
-  n = c(length(close), length(high_density))
-)
+# test, p = 0.09
+wilcox.test(close, high_density)
