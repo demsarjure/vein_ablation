@@ -1,10 +1,11 @@
+library(readxl)
 library(tidyverse)
 
 source("utils.R")
 
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read.csv("data/cleaned.csv")
+df_all <- read_excel("data/cleaned.xlsx")
 
 # r
 df_all$dormant_rspv_rr <- as.numeric(df_all$dormant_rspv_rr)
@@ -28,12 +29,11 @@ df_high_density <- df_all %>% filter(procedure_type == "high_density")
 
 
 # rspv_rr ----------------------------------------------------------------------
-# close: 6 +/- 2.15, high_density: 1 +/- 0.98
+# close: 6 ± 2.15, high_density: 1 ± 0.98
 close <- na.omit(df_close$dormant_rspv_rr)
 sum(close)
 boot_sd_sum(close)
 sum(close) / length(close) # 21.43%
-
 
 high_density <- na.omit(df_high_density$dormant_rspv_rr)
 sum(high_density)
@@ -45,7 +45,7 @@ wilcox.test(close, high_density)
 
 
 # rspv_ra ----------------------------------------------------------------------
-# close: 3 +/- 1.65, high_density: 2 +/- 1.35
+# close: 3 ± 1.65, high_density: 2 ± 1.35
 close <- na.omit(df_close$dormant_rspv_ra)
 sum(close)
 boot_sd_sum(close)
@@ -61,7 +61,7 @@ wilcox.test(close, high_density)
 
 
 # rspv_rp ----------------------------------------------------------------------
-# close: 4 +/- 1.85, high_density: 1 +/- 0.98
+# close: 4 ± 1.85, high_density: 1 ± 0.98
 close <- na.omit(df_close$dormant_rspv_rp)
 sum(close)
 boot_sd_sum(close)
@@ -93,7 +93,7 @@ wilcox.test(close, high_density)
 
 
 # ripv_rp ----------------------------------------------------------------------
-# close: 4 +/- 1.86, high_density: 2 +/- 1.35
+# close: 4 ± 1.86, high_density: 2 ± 1.35
 close <- na.omit(df_close$dormant_ripv_rp)
 sum(close)
 boot_sd_sum(close)
@@ -125,7 +125,7 @@ wilcox.test(close, high_density)
 
 
 # lspv_lr ----------------------------------------------------------------------
-# close: 1 +/- 0.98, high_density: 0
+# close: 1 ± 0.98, high_density: 0
 close <- na.omit(df_close$dormant_lspv_lr)
 sum(close)
 boot_sd_sum(close)
@@ -141,7 +141,7 @@ wilcox.test(close, high_density)
 
 
 # lspv_lrg ---------------------------------------------------------------------
-# close: 4 +/- 1.86, high_density: 1 +/- 0.98
+# close: 4 ± 1.86, high_density: 1 ± 0.98
 close <- na.omit(df_close$dormant_lspv_lrg)
 sum(close)
 boot_sd_sum(close)
@@ -157,7 +157,7 @@ wilcox.test(close, high_density)
 
 
 # lspv_lp ----------------------------------------------------------------------
-# close: 4 +/- 2.33, high_density: 0
+# close: 4 ± 2.33, high_density: 0
 close <- na.omit(df_close$dormant_lspv_lp)
 sum(close)
 boot_sd_sum(close)
@@ -173,7 +173,7 @@ wilcox.test(close, high_density)
 
 
 # lipv_la ----------------------------------------------------------------------
-# close: 3 +/- 1.62, high_density: 0
+# close: 3 ± 1.62, high_density: 0
 close <- na.omit(df_close$dormant_lipv_la)
 sum(close)
 boot_sd_sum(close)
@@ -205,7 +205,7 @@ wilcox.test(close, high_density)
 
 
 # lipv_lp ----------------------------------------------------------------------
-# close: 3 +/- 1.64, high_density: 0
+# close: 3 ± 1.64, high_density: 0
 close <- na.omit(df_close$dormant_lipv_lp)
 sum(close)
 boot_sd_sum(close)
@@ -218,3 +218,39 @@ sum(high_density) / length(high_density) # 0
 
 # test, p = 0.09
 wilcox.test(close, high_density)
+
+
+# group comparisons ------------------------------------------------------------
+close_all <- c(
+    na.omit(df_close$dormant_rspv_rr) +
+    na.omit(df_close$dormant_rspv_ra) +
+    na.omit(df_close$dormant_rspv_rp) +
+    na.omit(df_close$dormant_ripv_rp) +
+    na.omit(df_close$dormant_lspv_lr) +
+    na.omit(df_close$dormant_lspv_lrg) +
+    na.omit(df_close$dormant_lspv_lp) +
+    na.omit(df_close$dormant_lipv_la) +
+    na.omit(df_close$dormant_lipv_li) +
+    na.omit(df_close$dormant_lipv_lp))
+
+high_density_all <- c(
+    na.omit(df_high_density$dormant_rspv_rr) +
+    na.omit(df_high_density$dormant_rspv_ra) +
+    na.omit(df_high_density$dormant_rspv_rp) +
+    na.omit(df_high_density$dormant_ripv_rp) +
+    na.omit(df_high_density$dormant_lspv_lr) +
+    na.omit(df_high_density$dormant_lspv_lrg) +
+    na.omit(df_high_density$dormant_lspv_lp) +
+    na.omit(df_high_density$dormant_lipv_la) +
+    na.omit(df_high_density$dormant_lipv_li) +
+    na.omit(df_high_density$dormant_lipv_lp))
+
+# close: 34 ± 5.1, high_density: 7 ± 2.29
+sum(close_all)
+boot_sd_sum(close_all)
+
+sum(high_density_all)
+boot_sd_sum(high_density_all)
+
+# test p < 0.00002
+wilcox.test(close_all, high_density_all)

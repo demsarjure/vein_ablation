@@ -1,10 +1,11 @@
 library(tidyverse)
+library(readxl)
 library(survival)
 library(survminer)
 
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read.csv("data/cleaned.csv")
+df_all <- read_excel("data/cleaned.xlsx")
 
 # subset
 df_all <- df_all %>%

@@ -1,10 +1,11 @@
 library(tidyverse)
+library(readxl)
 
 source("utils.R")
 
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read.csv("data/cleaned.csv")
+df_all <- read_excel("data/cleaned.xlsx")
 
 # split
 df_close <- df_all %>% filter(procedure_type == "close")
@@ -12,11 +13,11 @@ df_high_density <- df_all %>% filter(procedure_type == "high_density")
 
 
 # skin_skin_time ---------------------------------------------------------------
-# close 131.47 +/- 27.06
+# close 131.47 ± 27.06
 mean(df_close$skin_skin_time)
 sd(df_close$skin_skin_time)
 
-# high_density 144.87 +/- 23.91
+# high_density 144.87 ± 23.91
 mean(df_high_density$skin_skin_time)
 sd(df_high_density$skin_skin_time)
 
@@ -25,11 +26,11 @@ wilcox.test(df_close$skin_skin_time, df_high_density$skin_skin_time)
 
 
 # la_dwell_time ----------------------------------------------------------------
-# close 114.47 +/- 22.63
+# close 114.47 ± 22.63
 mean(df_close$la_dwell_time)
 sd(df_close$la_dwell_time)
 
-# high_density 125.8 +/- 20.77
+# high_density 125.8 ± 20.77
 mean(df_high_density$la_dwell_time)
 sd(df_high_density$la_dwell_time)
 
@@ -38,11 +39,11 @@ wilcox.test(df_close$la_dwell_time, df_high_density$la_dwell_time)
 
 
 # ablation_time ----------------------------------------------------------------
-# close 29.44 +/- 7.9
+# close 29.44 ± 7.9
 mean(df_close$ablation_time)
 sd(df_close$ablation_time)
 
-# high_density 31.47 +/- 8.6
+# high_density 31.47 ± 8.6
 mean(df_high_density$ablation_time)
 sd(df_high_density$ablation_time)
 
@@ -53,7 +54,7 @@ wilcox.test(df_close$ablation_time, df_high_density$ablation_time)
 # ablation_time_hd -------------------------------------------------------------
 df_high_density$ablation_time_hd <- as.numeric(df_high_density$ablation_time_hd)
 
-# high_density 2.34 +/- 2.18
+# high_density 2.34 ± 2.18
 mean(df_high_density$ablation_time_hd)
 sd(df_high_density$ablation_time_hd)
 
@@ -61,17 +62,17 @@ sd(df_high_density$ablation_time_hd)
 # hd_map_time ------------------------------------------------------------------
 df_high_density$hd_map_time <- as.numeric(df_high_density$hd_map_time)
 
-# high_density 20.23 +/- 7.09
+# high_density 20.23 ± 7.09
 mean(df_high_density$hd_map_time)
 sd(df_high_density$hd_map_time)
 
 
 # number_of_rf_lesions_pvi -----------------------------------------------------
-# close 89.7 +/- 20.26
+# close 89.7 ± 20.26
 mean(df_close$number_of_rf_lesions_pvi)
 sd(df_close$number_of_rf_lesions_pvi)
 
-# high_density 89.07 +/- 19.92
+# high_density 89.07 ± 19.92
 mean(df_high_density$number_of_rf_lesions_pvi)
 sd(df_high_density$number_of_rf_lesions_pvi)
 
@@ -86,13 +87,13 @@ wilcox.test(
 df_high_density$additional_lesions_hd <-
   as.numeric(df_high_density$additional_lesions_hd)
 
-# high_density 7 +/- 6.83
+# high_density 7 ± 6.83
 mean(df_high_density$additional_lesions_hd)
 sd(df_high_density$additional_lesions_hd)
 
 
 # first_pass_rspv --------------------------------------------------------------
-# close: 76.67 +/- 7.76, high_density: 86.67 +/- 6.19
+# close: 76.67 ± 7.76%, high_density: 86.67 ± 6.19%
 sum(df_close$first_pass_rspv) / nrow(df_close)
 boot_sd(df_close$first_pass_rspv)
 
@@ -107,7 +108,7 @@ prop.test(
 
 
 # first_pass_ripv --------------------------------------------------------------
-# close: 83.33 +/- 6.78, high_density: 90 +/- 5.4
+# close: 83.33 ± 6.78%, high_density: 90 ± 5.4%
 sum(df_close$first_pass_ripv) / nrow(df_close)
 boot_sd(df_close$first_pass_ripv)
 
@@ -122,7 +123,7 @@ prop.test(
 
 
 # first_pass_lspv --------------------------------------------------------------
-# close: 83.33 +/- 6.79, high_density: 96.67 +/- 3.27
+# close: 83.33 ± 6.79%, high_density: 96.67 ± 3.27%
 sum(df_close$first_pass_lspv) / nrow(df_close)
 boot_sd(df_close$first_pass_lspv)
 
@@ -137,7 +138,7 @@ prop.test(
 
 
 # first_pass_lipv --------------------------------------------------------------
-# close: 1, high_density: 0.97 +/- 0.03
+# close: 100%, high_density: 97.67 ± 3.29%
 sum(df_close$first_pass_lipv) / nrow(df_close)
 boot_sd(df_close$first_pass_lipv)
 
@@ -152,7 +153,7 @@ prop.test(
 
 
 # first_pass_per_patient -------------------------------------------------------
-# close: 60 +/- 8.88, high_density: 80 +/- 7.37
+# close: 60 ± 8.88%, high_density: 80 ± 7.37%
 sum(df_close$first_pass_per_patient) / nrow(df_close)
 boot_sd(df_close$first_pass_per_patient)
 

@@ -1,12 +1,16 @@
 library(tidyverse)
+library(readxl)
+
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read.csv("data/cleaned.csv", stringsAsFactors = TRUE)
+df_all <- read_excel("data/cleaned.xlsx", stringsAsFactors = TRUE)
 
 # gender to 0/1
+df_all$gender <- as.factor(df_all$gender)
 df_all$gender_numeric <- as.numeric(df_all$gender) - 1
 
 # anticoagulation to 0/1
+df_all$anticoagulant <- as.factor(df_all$gender)
 df_all$anticoagulant_numeric <- as.numeric(df_all$anticoagulant) - 1
 
 

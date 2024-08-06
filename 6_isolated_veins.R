@@ -1,9 +1,10 @@
-library(tidyverse)
 library(ggplot2)
+library(readxl)
+library(tidyverse)
 
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read.csv("data/cleaned.csv")
+df_all <- read_excel("data/cleaned.xlsx")
 
 # subset
 df_all <- df_all %>%
@@ -21,11 +22,11 @@ df_high_density <- df_all %>% filter(procedure_type == "high_density")
 
 
 # number_of_isolated_veins -----------------------------------------------------
-# close 3.2 +/- 0.94
+# close 3.2 ± 0.94
 mean(df_close$number_of_isolated_veins)
 sd(df_close$number_of_isolated_veins)
 
-# high_density 3.65 +/- 0.75
+# high_density 3.65 ± 0.75
 mean(df_high_density$number_of_isolated_veins)
 sd(df_high_density$number_of_isolated_veins)
 
@@ -37,11 +38,11 @@ wilcox.test(
 
 
 # percentage of isolated veins -------------------------------------------------
-# close 80.17 +/- 23.5
+# close 80.17 ± 23.5
 mean(df_close$percentage_of_isolated_veins)
 sd(df_close$percentage_of_isolated_veins)
 
-# high_density 91.35 +/- 18.63
+# high_density 91.35 ± 18.63
 mean(df_high_density$percentage_of_isolated_veins)
 sd(df_high_density$percentage_of_isolated_veins)
 
@@ -53,11 +54,11 @@ prop.test(
 
 
 # 4 isolated veins closed vs high density --------------------------------------
-# close 44.83 +/- 9.22
+# close 44.83 ± 9.22
 sum(df_close$all_4_veins_isolated) / nrow(df_close)
 boot_sd(df_close$all_4_veins_isolated)
 
-# high_density 76.92 +/- 8.3
+# high_density 76.92 ± 8.3
 sum(df_high_density$all_4_veins_isolated) / nrow(df_high_density)
 boot_sd(df_high_density$all_4_veins_isolated)
 
