@@ -168,3 +168,28 @@ prop.test(
   ),
   n = c(nrow(df_close), nrow(df_high_density))
 )
+
+
+# cti ablation, close 2 patients, high_density 4 patient -----------------------
+n_cti_close <- 2
+cti_close <- c(rep(1, n_cti_close), rep(0, nrow(df_close) - n_cti_close))
+
+n_cti_high_density <- 4
+cti_high_density <- c(rep(1, n_cti_high_density), rep(0, nrow(df_high_density) - n_cti_high_density))
+
+# 6.67 ± 4.52%
+sum(cti_close / length(cti_close))
+boot_sd(cti_close)
+
+# 13.33 ± 6.15%
+sum(cti_high_density / length(cti_high_density))
+boot_sd(cti_high_density)
+
+# proportions test, p = 0.67
+prop.test(
+  x = c(
+    sum(cti_close),
+    sum(cti_high_density)
+  ),
+  n = c(length(cti_close), length(cti_high_density))
+)

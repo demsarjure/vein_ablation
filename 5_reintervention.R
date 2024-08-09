@@ -40,7 +40,7 @@ km_fit <- survfit(surv_obj ~ procedure_type, data = df_all)
 ggsurvplot(km_fit,
   data = df_all, pval = TRUE,
   conf.int = TRUE,
-  legend.labs = c("close", "high density")
+  legend.labs = c("Close", "High density")
 )
 
 # save as a png

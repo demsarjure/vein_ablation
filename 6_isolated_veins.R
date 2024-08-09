@@ -38,15 +38,15 @@ wilcox.test(
 
 
 # percentage of isolated veins -------------------------------------------------
-# close 80.17 ± 23.5
+# close 80.83 ± 23.38%
 mean(df_close$percentage_of_isolated_veins)
 sd(df_close$percentage_of_isolated_veins)
 
-# high_density 91.35 ± 18.63
+# high_density 92.24 ± 17.81%
 mean(df_high_density$percentage_of_isolated_veins)
 sd(df_high_density$percentage_of_isolated_veins)
 
-# proportions test, p = 0.29
+# proportions test, p = 0.02
 prop.test(
   x = c(sum(df_close$number_of_isolated_veins), sum (df_high_density$number_of_isolated_veins)),
   n = c(nrow(df_close) * 4, nrow(df_high_density) * 4)
@@ -54,11 +54,11 @@ prop.test(
 
 
 # 4 isolated veins closed vs high density --------------------------------------
-# close 44.83 ± 9.22
+# close 46.67 ± 9.24%
 sum(df_close$all_4_veins_isolated) / nrow(df_close)
 boot_sd(df_close$all_4_veins_isolated)
 
-# high_density 76.92 ± 8.3
+# high_density 79.31 ± 7.57%
 sum(df_high_density$all_4_veins_isolated) / nrow(df_high_density)
 boot_sd(df_high_density$all_4_veins_isolated)
 
@@ -78,8 +78,8 @@ df_cm_hd <- df_all %>%
     sd = sd(number_of_isolated_veins)
   )
 
-# change high_density to high density
-df_cm_hd$procedure_type <- c("close", "high density")
+# labels
+df_cm_hd$procedure_type <- c("Close", "High density")
 
 # plot per type
 ggplot(df_cm_hd, aes(x = mean, y = procedure_type)) +
@@ -92,7 +92,7 @@ ggplot(df_cm_hd, aes(x = mean, y = procedure_type)) +
   geom_point(shape = 16, size = 3, color = "grey25") +
   xlim(0, 4) +
   ylab("") +
-  xlab("number of isolated veins")
+  xlab("Average number of durably isolated pulmonary veins")
 
 # save as a png
 ggsave(
@@ -148,6 +148,10 @@ df_cm_hd_counts <- as.data.frame(df_cm_hd_counts)
 df_cm_hd_counts <- df_cm_hd_counts %>%
   complete(procedure_type, number_of_isolated_veins, fill = list(n = 0, sd = 0))
 
+# labels, replace close with Close, high_density with High density
+df_cm_hd_counts$procedure_type[df_cm_hd_counts$procedure_type == "close"] <- "Close"
+df_cm_hd_counts$procedure_type[df_cm_hd_counts$procedure_type == "high_density"] <- "High density"
+
 # plot per type per count
 ggplot(
   df_cm_hd_counts,
@@ -162,14 +166,38 @@ ggplot(
     color = "black"
   ) +
   scale_fill_manual(values = c("grey25", "grey75")) +
-  ylab("patients") +
-  xlab("number of isolated veins") +
+  ylab("Patients") +
+  xlab("Number of durably isolated pulmonary veins") +
   theme(legend.title = element_blank())
 
 # save as a png
 ggsave(
   "figs/isolated_veins_per_type.png",
   width = 1920,
+  height = 1080,
+  dpi = 300,
+  units = "px"
+)
+
+
+# durable isolation plot -------------------------------------------------------
+# sum per group
+df_veins <- df_cm_hd_counts %>%
+  group_by(procedure_type) %>%
+  summarize(veins = sum(n * number_of_isolated_veins))
+
+# plot
+ggplot(df_veins, aes(x = procedure_type, y = veins)) +
+  geom_bar(stat = "identity", fill = c("grey25", "grey75")) +
+  geom_text(aes(label = veins), vjust = -0.5) +
+  ylab("Pulmonary veins") +
+  xlab("Procedure type") +
+  ylim(0, 115)
+
+# save as a png
+ggsave(
+  "figs/isolated_veins_sum.png",
+  width = 720,
   height = 1080,
   dpi = 300,
   units = "px"

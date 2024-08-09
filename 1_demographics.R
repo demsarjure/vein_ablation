@@ -5,7 +5,7 @@ source("utils.R")
 
 
 # preprocessing ----------------------------------------------------------------
-df_all <- read_excel("data/cleaned.xlsx", stringsAsFactors = TRUE)
+df_all <- read_excel("data/cleaned.xlsx")
 
 # gender to 0/1
 df_all$gender <- as.factor(df_all$gender)
@@ -100,6 +100,20 @@ sd(high_density_lvedvi)
 
 # test p = 0.71
 wilcox.test(df_close$lvedvi, high_density_lvedvi)
+
+
+# lvef -------------------------------------------------------------------------
+# close 66.57 ± 5.91
+mean(df_close$lvef)
+sd(df_close$lvef)
+
+# high_density 62.29 ± 6.95
+high_density_lvef <- df_high_density$lvef[!is.na(df_high_density$lvef)]
+mean(high_density_lvef)
+sd(high_density_lvef)
+
+# test p = 0.5
+wilcox.test(df_close$lvef, high_density_lvef)
 
 
 # class_III_drugs --------------------------------------------------------------

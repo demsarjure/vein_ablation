@@ -24,6 +24,13 @@ df_all$procedure_date <- as.Date(df_all$procedure_date, format = "%d/%m/%Y")
 df_all$recidiv <-
   as.Date(df_all$recidiv, format = "%d/%m/%Y")
 
+# sort out the type
+df_all$procedure_type <- factor(df_all$procedure_type)
+
+# split
+df_close <- df_all %>% filter(procedure_type == "close")
+df_high_density <- df_all %>% filter(procedure_type == "high_density")
+
 # only those that had recidiv
 df_recidiv <- drop_na(df_all)
 
@@ -31,9 +38,6 @@ df_recidiv <- drop_na(df_all)
 df_recidiv$diff <- df_recidiv$recidiv - df_recidiv$procedure_date
 
 # split
-df_close <- df_all %>% filter(procedure_type == "close")
-df_high_density <- df_all %>% filter(procedure_type == "high_density")
-
 df_recidiv_close <- df_recidiv %>% filter(procedure_type == "close")
 df_recidiv_high_density <- df_recidiv %>% filter(procedure_type == "high_density")
 
@@ -49,7 +53,7 @@ boot_sd_sum(df_high_density$had_recidiv)
 # test p = 0.4
 wilcox.test(df_close$had_recidiv, df_high_density$had_recidiv)
 
-# close: 33.33 ± 8.49, high_density: 23.33 ± 7.67
+# close: 33.33 ± 8.49%, high_density: 23.33 ± 7.67%
 sum(df_close$had_recidiv) / nrow(df_close)
 boot_sd(df_close$had_recidiv)
 
@@ -78,7 +82,6 @@ sd(df_recidiv_high_density$diff)
 
 # survival analysis ------------------------------------------------------------
 # create the survival object
-df_recidiv$procedure_type <- factor(df_recidiv$procedure_type)
 df_recidiv$status <- rep(1, nrow(df_recidiv))
 surv_obj <- Surv(time = df_recidiv$diff, event = df_recidiv$status)
 
@@ -90,11 +93,71 @@ ggsurvplot(km_fit,
   data = df_recidiv, pval = TRUE,
   conf.int = TRUE,
   legend.title = "",
-  legend.labs = c("close", "high density"),
+  legend.labs = c("Close", "High density"),
   xlab = "time (days)",
   ylab = "recidiv probability",
   fun = "event"
 )
+
+
+# plot survivability through time ----------------------------------------------
+n_close <- nrow(df_close)
+n_high_density <- nrow(df_high_density)
+n_recidiv <- nrow(df_recidiv)
+
+# sort df recidiv by diff
+df_recidiv <- df_recidiv[order(df_recidiv$diff), ]
+
+df_survivability <- data.frame(
+  time = c(0, 0),
+  surv = c(100, 100),
+  group = c("close", "high_density")
+)
+
+close_count <- 0
+high_density_count <- 0
+for (i in seq_len(n_recidiv)) {
+  day <- df_recidiv$diff[i]
+  group <- df_recidiv$procedure_type[i]
+
+  if (group == "close") {
+    close_count <- close_count + 1
+    surv <- 100 - 100 * (close_count / n_close)
+  } else {
+    high_density_count <- high_density_count + 1
+    surv <- 100 - 100 * (high_density_count / n_high_density)
+  }
+
+  df_survivability <- df_survivability %>%
+    add_row(
+      data.frame(
+        time = as.numeric(day),
+        surv = surv,
+        group = group
+      )
+    )
+}
+
+df_survivability <- df_survivability %>%
+  add_row(
+    data.frame(
+      time = max(df_survivability$time),
+      surv = min(df_survivability$surv[df_survivability$group == "high_density"]),
+      group = "high_density"
+    )
+  )
+
+# replace
+df_survivability$group[df_survivability$group == "close"] <- "Close"
+df_survivability$group[df_survivability$group == "high_density"] <- "High density"
+
+# plot
+ggplot(df_survivability, aes(x = time, y = surv, color = group)) +
+  geom_line(linewidth = 1) +
+  labs(x = "Time (days)", y = "Survivability (%)") +
+  scale_color_manual(values = c("grey25", "grey75")) +
+  ylim(0, 100) +
+  theme(legend.title = element_blank())
 
 # save as a png
 ggsave(
@@ -108,12 +171,12 @@ ggsave(
 
 # is recidiv correlated with the number of reconnected veins -------------------
 df_reconnected <- df_all %>% 
-  select(procedure_type, number_of_reconnected_veins, had_recidiv))
+  select(procedure_type, number_of_reconnected_veins, had_recidiv)
 df_reconnected <- drop_na(df_reconnected)
 df_recidiv_reconnected <- df_reconnected %>% filter(had_recidiv == 1)
 df_no_recidiv_reconnected <- df_reconnected %>% filter(had_recidiv == 0)
 
-# close: 23 ± 5.05, high_density: 9 ± 0.98
+# close: 0.76 ± 1.25, high_density: 0.45 ± 0.65
 recidiv <- df_recidiv_reconnected$number_of_reconnected_veins
 mean(recidiv)
 sd(recidiv)
@@ -122,7 +185,7 @@ no_recidiv <- df_no_recidiv_reconnected$number_of_reconnected_veins
 mean(no_recidiv)
 sd(no_recidiv)
 
-# test p = 0.4
+# test p = 0.76
 wilcox.test(recidiv, no_recidiv)
 
 
@@ -134,7 +197,7 @@ df_dormant <- drop_na(df_dormant)
 df_recidiv_dormant <- df_dormant %>% filter(had_recidiv == 1)
 df_no_recidiv_dormant <- df_dormant %>% filter(had_recidiv == 0)
 
-# close: 23 ± 5.05, high_density: 9 ± 0.98
+# close: 0.06 ± 0.24, high_density: 0.06 ± 0.24
 recidiv <- c(
   df_recidiv_dormant$dormant_rspv_rr,
   df_recidiv_dormant$dormant_rspv_ra,
@@ -169,5 +232,5 @@ no_recidiv <- c(
 mean(no_recidiv)
 sd(no_recidiv)
 
-# test p = 0.4
+# test p = 0.65
 wilcox.test(recidiv, no_recidiv)
