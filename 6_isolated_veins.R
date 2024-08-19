@@ -22,15 +22,15 @@ df_high_density <- df_all %>% filter(procedure_type == "high_density")
 
 
 # number_of_isolated_veins -----------------------------------------------------
-# close 3.2 ± 0.94
+# close 3.23 ± 0.94
 mean(df_close$number_of_isolated_veins)
 sd(df_close$number_of_isolated_veins)
 
-# high_density 3.65 ± 0.75
+# high_density 3.69 ± 0.71
 mean(df_high_density$number_of_isolated_veins)
 sd(df_high_density$number_of_isolated_veins)
 
-# test p = 0.02
+# test p = 0.01
 wilcox.test(
   df_close$number_of_isolated_veins,
   df_high_density$number_of_isolated_veins
@@ -62,7 +62,7 @@ boot_sd(df_close$all_4_veins_isolated)
 sum(df_high_density$all_4_veins_isolated) / nrow(df_high_density)
 boot_sd(df_high_density$all_4_veins_isolated)
 
-# proportions test, p = 0.03
+# proportions test, p = 0.02
 prop.test(
   x = c(sum(df_close$all_4_veins_isolated), sum(df_high_density$all_4_veins_isolated)),
   n = c(nrow(df_close), nrow(df_high_density))
@@ -92,7 +92,8 @@ ggplot(df_cm_hd, aes(x = mean, y = procedure_type)) +
   geom_point(shape = 16, size = 3, color = "grey25") +
   xlim(0, 4) +
   ylab("") +
-  xlab("Average number of durably isolated pulmonary veins")
+  xlab("Average number of durably isolated pulmonary veins") +
+  theme_minimal()
 
 # save as a png
 ggsave(
@@ -100,7 +101,8 @@ ggsave(
   width = 1920,
   height = 1080,
   dpi = 300,
-  units = "px"
+  units = "px",
+  bg = "white"
 )
 
 
@@ -168,7 +170,8 @@ ggplot(
   scale_fill_manual(values = c("grey25", "grey75")) +
   ylab("Patients") +
   xlab("Number of durably isolated pulmonary veins") +
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  theme_minimal()
 
 # save as a png
 ggsave(
@@ -176,7 +179,8 @@ ggsave(
   width = 1920,
   height = 1080,
   dpi = 300,
-  units = "px"
+  units = "px",
+  bg = "white"
 )
 
 
@@ -192,7 +196,8 @@ ggplot(df_veins, aes(x = procedure_type, y = veins)) +
   geom_text(aes(label = veins), vjust = -0.5) +
   ylab("Pulmonary veins") +
   xlab("Procedure type") +
-  ylim(0, 115)
+  ylim(0, 115) +
+  theme_minimal()
 
 # save as a png
 ggsave(
@@ -200,5 +205,6 @@ ggsave(
   width = 720,
   height = 1080,
   dpi = 300,
-  units = "px"
+  units = "px",
+  bg = "white"
 )

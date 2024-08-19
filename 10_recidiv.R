@@ -43,7 +43,7 @@ df_recidiv_high_density <- df_recidiv %>% filter(procedure_type == "high_density
 
 
 # percentage/number of recidivs between groups ---------------------------------
-# close: 10 ± 2.57, high_density: 7 ± 2.32
+# close: 10 ± 2.57, high_density: 7 ± 2.29
 sum(df_close$had_recidiv)
 boot_sd_sum(df_close$had_recidiv)
 
@@ -53,14 +53,14 @@ boot_sd_sum(df_high_density$had_recidiv)
 # test p = 0.4
 wilcox.test(df_close$had_recidiv, df_high_density$had_recidiv)
 
-# close: 33.33 ± 8.49%, high_density: 23.33 ± 7.67%
+# close: 33.33 ± 8.59%, high_density: 24.14 ± 7.94%
 sum(df_close$had_recidiv) / nrow(df_close)
 boot_sd(df_close$had_recidiv)
 
 sum(df_high_density$had_recidiv) / nrow(df_high_density)
-boot_sd(df_close$had_recidiv)
+boot_sd(df_high_density$had_recidiv)
 
-# proportions test, p = 0.5
+# proportions test, p = 0.62
 prop.test(
   x = c(
     sum(df_close$had_recidiv),
@@ -157,7 +157,8 @@ ggplot(df_survivability, aes(x = time, y = surv, color = group)) +
   labs(x = "Time (days)", y = "Survivability (%)") +
   scale_color_manual(values = c("grey25", "grey75")) +
   ylim(0, 100) +
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  theme_minimal()
 
 # save as a png
 ggsave(
@@ -165,7 +166,8 @@ ggsave(
   width = 1920,
   height = 1080,
   dpi = 300,
-  units = "px"
+  units = "px",
+  bg = "white"
 )
 
 
@@ -176,7 +178,7 @@ df_reconnected <- drop_na(df_reconnected)
 df_recidiv_reconnected <- df_reconnected %>% filter(had_recidiv == 1)
 df_no_recidiv_reconnected <- df_reconnected %>% filter(had_recidiv == 0)
 
-# close: 0.76 ± 1.25, high_density: 0.45 ± 0.65
+# close: 0.76 ± 1.25, high_density: 0.45 ± 0.63
 recidiv <- df_recidiv_reconnected$number_of_reconnected_veins
 mean(recidiv)
 sd(recidiv)

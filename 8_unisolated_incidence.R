@@ -29,7 +29,7 @@ df_high_density <- df_all %>% filter(procedure_type == "high_density")
 
 
 # rspv_rr ----------------------------------------------------------------------
-# close: 10 ± 5.41%, high_density: 0
+# close: 10 ± 5.47%, high_density: 0
 close <- na.omit(df_close$rspv_rr_isolation)
 1 - (sum(close) / length(close))
 boot_sd(close)
@@ -45,7 +45,7 @@ prop.test(
   n = c(length(close), length(high_density))
 )
 
-# close: 3 ± 1.64, high_density: 0
+# close: 3 ± 1.65, high_density: 0
 length(close) - sum(close)
 boot_sd_sum(1 - close)
 
@@ -59,7 +59,7 @@ length(all) - sum(all)
 
 
 # rspv_ra ----------------------------------------------------------------------
-# close: 13.33 ± 6.25%, high_density: 6.9 ± 4.76%
+# close: 13.33 ± 6.19%, high_density: 6.9 ± 4.7%
 close <- na.omit(df_close$rspv_ra_isolation)
 1 - (sum(close) / length(close))
 boot_sd(close)
@@ -75,7 +75,7 @@ prop.test(
   n = c(length(close), length(high_density))
 )
 
-# close: 4 ± 1.12, high_density: 2 ± 1.35
+# close: 4 ± 1.86, high_density: 2 ± 1.35
 length(close) - sum(close)
 boot_sd_sum(1 - close)
 
@@ -89,7 +89,7 @@ length(all) - sum(all)
 
 
 # rspv_rp ----------------------------------------------------------------------
-# close: 10 ± 5.5%, high_density: 6.9 ± 4.68%
+# close: 10 ± 5.47%, high_density: 6.9 ± 4.7%
 close <- na.omit(df_close$rspv_rp_isolation)
 1 - (sum(close) / length(close))
 boot_sd(close)
@@ -105,7 +105,7 @@ prop.test(
   n = c(length(close), length(high_density))
 )
 
-# close: 3 ± 1.67, high_density: 2 ± 1.37
+# close: 3 ± 1.65, high_density: 2 ± 1.35
 length(close) - sum(close)
 boot_sd_sum(1 - close)
 
@@ -119,7 +119,7 @@ length(all) - sum(all)
 
 
 # right_carina_rspv ------------------------------------------------------------
-# close: 10 ± 5.5%, high_density: 0
+# close: 10 ± 5.47%, high_density: 0
 close <- na.omit(df_close$right_carina_rspv)
 1 - (sum(close) / length(close))
 boot_sd(close)
@@ -135,7 +135,7 @@ prop.test(
   n = c(length(close), length(high_density))
 )
 
-# close: 3 ± 1.63, high_density: 0
+# close: 3 ± 1.65, high_density: 0
 length(close) - sum(close)
 boot_sd_sum(1 - close)
 
@@ -172,14 +172,14 @@ boot_sd_sum(1 - close)
 length(high_density) - sum(high_density)
 boot_sd_sum(1 - high_density)
 
-# 1, 1.82%
+# 1, 1.69%
 all <- na.omit(df_all$ripv_ra_isolation)
 length(all) - sum(all)
 1 - (sum(all) / length(all))
 
 
 # ripv_rp ----------------------------------------------------------------------
-# close: 10 ± 5.44%, high_density: 0
+# close: 10 ± 5.47%, high_density: 0
 close <- na.omit(df_close$ripv_rp_isolation)
 1 - (sum(close) / length(close))
 boot_sd(close)
@@ -188,7 +188,7 @@ high_density <- na.omit(df_high_density$ripv_rp_isolation)
 1 - (sum(high_density) / length(high_density))
 boot_sd(high_density)
 
-# proportions test, p = 0.27
+# proportions test, p = 0.25
 x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
 prop.test(
   x = x,
@@ -207,7 +207,7 @@ all <- na.omit(df_all$ripv_rp_isolation)
 length(all) - sum(all)
 1 - (sum(all) / length(all))
 
-t
+
 # ripv_ri ----------------------------------------------------------------------
 # close: 0, high_density: 0
 close <- na.omit(df_close$ripv_ri_isolation)
@@ -248,7 +248,7 @@ high_density <- na.omit(df_high_density$right_carina_ripv)
 1 - (sum(high_density) / length(high_density))
 boot_sd(high_density)
 
-# proportions test, p = 1
+# proportions test, p = 0.25
 x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
 prop.test(
   x = x,
@@ -269,7 +269,7 @@ length(all) - sum(all)
 
 
 # lspv_lr ----------------------------------------------------------------------
-# close: 3.33 ± 3.26%, high_density: 3.45 ± 3.38%
+# close: 3.33 ± 3.25%, high_density: 3.45 ± 3.38%
 close <- na.omit(df_close$lspv_lr_isolation)
 1 - (sum(close) / length(close))
 boot_sd(close)
@@ -299,7 +299,7 @@ length(all) - sum(all)
 
 
 # lspv_lrg ---------------------------------------------------------------------
-# close: 3.33 ± 3.3%, high_density: 3.45 ± 3.36%
+# close: 3.33 ± 3.25%, high_density: 3.45 ± 3.38%
 close <- na.omit(df_close$lspv_lrg_isolation)
 1 - (sum(close) / length(close))
 boot_sd(close)
@@ -315,7 +315,7 @@ prop.test(
   n = c(length(close), length(high_density))
 )
 
-# close: 1 ± 0.97, high_density: 1 ± 0.98
+# close: 1 ± 0.98, high_density: 1 ± 0.98
 length(close) - sum(close)
 boot_sd_sum(1 - close)
 
@@ -345,7 +345,7 @@ prop.test(
   n = c(length(close), length(high_density))
 )
 
-# close: 2 ± 1.37, high_density: 1 ± 0.97
+# close: 2 ± 1.37, high_density: 1 ± 0.98
 length(close) - sum(close)
 boot_sd_sum(1 - close)
 
@@ -363,7 +363,7 @@ length(all) - sum(all)
 
 
 # lipv_la ----------------------------------------------------------------------
-# close: 6.67 ± 4.52%, high_density: 0
+# close: 6.67 ± 4.54%, high_density: 0
 close <- na.omit(df_close$lipv_la_isolation)
 1 - (sum(close) / length(close))
 boot_sd(close)
@@ -379,7 +379,7 @@ prop.test(
   n = c(length(close), length(high_density))
 )
 
-# close: 2 ± 1.38, high_density: 0
+# close: 2 ± 1.37, high_density: 0
 length(close) - sum(close)
 boot_sd_sum(1 - close)
 
@@ -393,7 +393,7 @@ length(all) - sum(all)
 
 
 # lipv_li ----------------------------------------------------------------------
-# close: 0, high_density: 3.45 ± 3.39%
+# close: 0, high_density: 3.45 ± 3.38%
 close <- na.omit(df_close$lipv_li_isolation)
 1 - (sum(close) / length(close))
 boot_sd(close)
@@ -402,14 +402,14 @@ high_density <- na.omit(df_high_density$lipv_li_isolation)
 1 - (sum(high_density) / length(high_density))
 boot_sd(high_density)
 
-# proportions test, p = 1
+# proportions test, p = 0.99
 x <- c(length(close) - sum(close), length(high_density) - sum(high_density))
 prop.test(
   x = x,
   n = c(length(close), length(high_density))
 )
 
-# close: 0, high_density: 1 ± 0.99
+# close: 0, high_density: 1 ± 0.98
 length(close) - sum(close)
 boot_sd_sum(1 - close)
 
@@ -423,7 +423,7 @@ length(all) - sum(all)
 
 
 # lipv_lp ----------------------------------------------------------------------
-# close: 3.33 ± 3.26%, high_density: 3.45 ± 3.4%
+# close: 3.33 ± 3.25%, high_density: 3.45 ± 3.38%
 close <- na.omit(df_close$lipv_lp_isolation)
 1 - (sum(close) / length(close))
 boot_sd(close)
@@ -439,7 +439,7 @@ prop.test(
   n = c(length(close), length(high_density))
 )
 
-# close: 1 ± 0.98, high_density: 1 ± 0.97
+# close: 1 ± 0.98, high_density: 1 ± 0.98
 length(close) - sum(close)
 boot_sd_sum(1 - close)
 

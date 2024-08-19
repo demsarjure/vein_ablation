@@ -26,6 +26,18 @@ df_all$diff <- df_all$reintervention_date - df_all$procedure_date
 df_close <- df_all %>% filter(procedure_type == "close")
 df_high_density <- df_all %>% filter(procedure_type == "high_density")
 
+# summary statistics -----------------------------------------------------------
+# close 442.47 ± 93.86
+mean(df_close$diff)
+sd(df_close$diff)
+
+# high_density 386.76 ± 99.82
+mean(df_high_density$diff)
+sd(df_high_density$diff)
+
+# test p = 0.09
+wilcox.test(as.numeric(df_close$diff), as.numeric(df_high_density$diff))
+
 
 # survival analysis ------------------------------------------------------------
 # create the survival object
@@ -41,13 +53,4 @@ ggsurvplot(km_fit,
   data = df_all, pval = TRUE,
   conf.int = TRUE,
   legend.labs = c("Close", "High density")
-)
-
-# save as a png
-ggsave(
-  "figs/reintervention.png",
-  width = 1920,
-  height = 1080,
-  dpi = 300,
-  units = "px"
 )

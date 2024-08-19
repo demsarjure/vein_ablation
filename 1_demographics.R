@@ -25,16 +25,16 @@ df_high_density <- df_all %>% filter(procedure_type == "high_density")
 mean(df_close$age)
 sd(df_close$age)
 
-# high_density 61.56 ± 9.6
+# high_density 62.61 ± 7.83
 mean(df_high_density$age)
 sd(df_high_density$age)
 
-# test p = 0.44
+# test p = 0.57
 wilcox.test(df_close$age, df_high_density$age)
 
 
 # gender -----------------------------------------------------------------------
-# 0 = F, 1 = M, close: 50 ± 9.2% male, high_density: 67.67 ± 8.67% male
+# 0 = F, 1 = M, close: 50 ± 9.2% male, high_density: 65.52 ± 8.81% male
 sum(df_close$gender_numeric) / nrow(df_close)
 boot_sd(df_close$gender_numeric)
 
@@ -53,11 +53,11 @@ prop.test(
 mean(df_close$bmi)
 sd(df_close$bmi)
 
-# high_density 27.88 ± 4.4
+# high_density 27.98 ± 4.44
 mean(df_high_density$bmi)
 sd(df_high_density$bmi)
 
-# test p = 0.4
+# test p = 0.46
 wilcox.test(df_close$bmi, df_high_density$bmi)
 
 
@@ -66,11 +66,11 @@ wilcox.test(df_close$bmi, df_high_density$bmi)
 mean(df_close$la_volume_index)
 sd(df_close$la_volume_index)
 
-# high_density 39.1 ± 10.21
+# high_density 39.38 ± 10.28
 mean(df_high_density$la_volume_index)
 sd(df_high_density$la_volume_index)
 
-# test p = 0.54
+# test p = 0.62
 wilcox.test(df_close$la_volume_index, df_high_density$la_volume_index)
 
 
@@ -79,11 +79,11 @@ wilcox.test(df_close$la_volume_index, df_high_density$la_volume_index)
 mean(df_close$la_size)
 sd(df_close$la_size)
 
-# high_density 41.2 ± 6.05
+# high_density 41.38 ± 6.08
 mean(df_high_density$la_size)
 sd(df_high_density$la_size)
 
-# test p = 0.92
+# test p = 0.95
 wilcox.test(df_close$la_size, df_high_density$la_size)
 
 
@@ -92,13 +92,13 @@ wilcox.test(df_close$la_size, df_high_density$la_size)
 mean(df_close$lvedvi)
 sd(df_close$lvedvi)
 
-# high_density 58.89 ± 8.26
+# high_density 58.78 ± 8.4
 # drop NA
 high_density_lvedvi <- df_high_density$lvedvi[!is.na(df_high_density$lvedvi)]
 mean(high_density_lvedvi)
 sd(high_density_lvedvi)
 
-# test p = 0.71
+# test p = 0.64
 wilcox.test(df_close$lvedvi, high_density_lvedvi)
 
 
@@ -107,24 +107,24 @@ wilcox.test(df_close$lvedvi, high_density_lvedvi)
 mean(df_close$lvef)
 sd(df_close$lvef)
 
-# high_density 62.29 ± 6.95
+# high_density 65.22 ± 7.01
 high_density_lvef <- df_high_density$lvef[!is.na(df_high_density$lvef)]
 mean(high_density_lvef)
 sd(high_density_lvef)
 
-# test p = 0.5
+# test p = 0.47
 wilcox.test(df_close$lvef, high_density_lvef)
 
 
 # class_III_drugs --------------------------------------------------------------
-# close: 33.33 ± 8.59%, high_density: 26.67 ± 8.11%
+# close: 33.33 ± 8.59%, high_density: 27.59 ± 8.3%
 sum(df_close$class_III_drugs) / nrow(df_close)
 boot_sd(df_close$class_III_drugs)
 
 sum(df_high_density$class_III_drugs) / nrow(df_high_density)
 boot_sd(df_high_density$class_III_drugs)
 
-# proportions test, p = 0.78
+# proportions test, p = 0.84
 prop.test(
   x = c(sum(df_close$class_III_drugs), sum(df_high_density$class_III_drugs)),
   n = c(nrow(df_close), nrow(df_high_density))
@@ -132,14 +132,14 @@ prop.test(
 
 
 # class_I_drugs --------------------------------------------------------------
-# close: 43.33 ± 8.91%, high_density: 33.33 ± 8.63%
+# close: 43.33 ± 8.91%, high_density: 31.03 ± 8.49%
 sum(df_close$class_I_drugs) / nrow(df_close)
 boot_sd(df_close$class_I_drugs)
 
 sum(df_high_density$class_I_drugs) / nrow(df_high_density)
 boot_sd(df_high_density$class_I_drugs)
 
-# proportions test, p = 0.6
+# proportions test, p = 0.48
 prop.test(
   x = c(sum(df_close$class_I_drugs), sum(df_high_density$class_I_drugs)),
   n = c(nrow(df_close), nrow(df_high_density))
@@ -147,7 +147,7 @@ prop.test(
 
 
 # beta_blockers --------------------------------------------------------------
-# close: 56.67 ± 8.97%, high_density: 53.33 ± 9.08%
+# close: 56.67 ± 8.97%, high_density: 55.17 ± 9.25%
 sum(df_close$beta_blockers) / nrow(df_close)
 boot_sd(df_close$beta_blockers)
 
@@ -162,14 +162,14 @@ prop.test(
 
 
 # anticoagulant ----------------------------------------------------------------
-# close: 83.33 ± 6.83%, high_density: 80 ± 7.3%
+# close: 50 ± 9.1%, high_density: 65.52 ± 8.79%
 sum(df_close$anticoagulant_numeric) / nrow(df_close)
 boot_sd(df_close$anticoagulant_numeric)
 
 sum(df_high_density$anticoagulant_numeric) / nrow(df_high_density)
 boot_sd(df_high_density$anticoagulant_numeric)
 
-# proportions test, p = 1
+# proportions test, p = 0.35
 prop.test(
   x = c(
     sum(df_close$anticoagulant_numeric),
@@ -185,7 +185,7 @@ close_probnp <- df_close$probnp[!is.na(df_close$probnp)]
 mean(close_probnp)
 sd(close_probnp)
 
-# high_density 313.9 ± 494.2
+# high_density 323.3 ± 501.06
 # drop NA
 high_density_probnp <- df_high_density$probnp[!is.na(df_high_density$probnp)]
 mean(high_density_probnp)
@@ -196,7 +196,7 @@ wilcox.test(close_probnp, high_density_probnp)
 
 
 # chf --------------------------------------------------------------------------
-# close: 3.33 ± 3.27%, high_density: 3.33 ± 3.3%
+# close: 3.33 ± 3.27%, high_density: 3.45 ± 3.37%
 sum(df_close$chf) / nrow(df_close)
 boot_sd(df_close$chf)
 
@@ -211,14 +211,14 @@ prop.test(
 
 
 # hypertension_history ---------------------------------------------------------
-# close: 56.67 ± 8.97%, high_density: 43.33 ± 9.05%
+# close: 56.67 ± 8.97%, high_density: 41.38 ± 9.08%
 sum(df_close$hypertension_history) / nrow(df_close)
 boot_sd(df_close$hypertension_history)
 
 sum(df_high_density$hypertension_history) / nrow(df_high_density)
 boot_sd(df_high_density$hypertension_history)
 
-# proportions test, p = 0.44
+# proportions test, p = 0.36
 prop.test(
   x = c(sum(df_close$hypertension_history), sum(df_high_density$hypertension_history)),
   n = c(nrow(df_close), nrow(df_high_density))
@@ -226,14 +226,14 @@ prop.test(
 
 
 # age_75 -----------------------------------------------------------------------
-# close: 13.33 ± 6.21%, high_density: 3.33 ± 3.24%
+# close: 13.33 ± 6.21%, high_density: 3.45 ± 3.37%
 sum(df_close$age_75) / nrow(df_close)
 boot_sd(df_close$age_75)
 
 sum(df_high_density$age_75) / nrow(df_high_density)
 boot_sd(df_high_density$age_75)
 
-# proportions test, p = 0.35
+# proportions test, p = 0.37
 prop.test(
   x = c(sum(df_close$age_75), sum(df_high_density$age_75)),
   n = c(nrow(df_close), nrow(df_high_density))
@@ -241,7 +241,7 @@ prop.test(
 
 
 # diabetes_history -------------------------------------------------------------
-# close: 13.33 ± 6.2%, high_density: 10 ± 5.49%
+# close: 13.33 ± 6.2%, high_density: 10.34 ± 5.63%
 sum(df_close$diabetes_history) / nrow(df_close)
 boot_sd(df_close$diabetes_history)
 
@@ -256,14 +256,14 @@ prop.test(
 
 
 # vascular_disease -------------------------------------------------------------
-# close: 10 ± 5.45%, high_density: 3.33 ± 3.25%
+# close: 10 ± 5.45%, high_density: 3.45 ± 3.42%
 sum(df_close$vascular_disease) / nrow(df_close)
 boot_sd(df_close$vascular_disease)
 
 sum(df_high_density$vascular_disease) / nrow(df_high_density)
 boot_sd(df_high_density$vascular_disease)
 
-# proportions test, p = 0.6
+# proportions test, p = 0.63
 prop.test(
   x = c(sum(df_close$vascular_disease), sum(df_high_density$vascular_disease)),
   n = c(nrow(df_close), nrow(df_high_density))
@@ -271,14 +271,14 @@ prop.test(
 
 
 # age_65_74 --------------------------------------------------------------------
-# close: 50 ± 9.22%, high_density: 36.67 ± 8.7%
+# close: 50 ± 9.22%, high_density: 37.93 ± 9.14%
 sum(df_close$age_65_74) / nrow(df_close)
 boot_sd(df_close$age_65_74)
 
 sum(df_high_density$age_65_74) / nrow(df_high_density)
 boot_sd(df_high_density$age_65_74)
 
-# proportions test, p = 0.43
+# proportions test, p = 0.5
 prop.test(
   x = c(sum(df_close$age_65_74), sum(df_high_density$age_65_74)),
   n = c(nrow(df_close), nrow(df_high_density))
@@ -290,9 +290,9 @@ prop.test(
 mean(df_close$cha2ds2vasc)
 sd(df_close$cha2ds2vasc)
 
-# high_density 1.3 ± 1.05
+# high_density 1.31 ± 1.07
 mean(df_high_density$cha2ds2vasc)
 sd(df_high_density$cha2ds2vasc)
 
-# test p = 0.05
+# test p = 0.06
 wilcox.test(df_close$cha2ds2vasc, df_high_density$cha2ds2vasc)
