@@ -12,7 +12,7 @@ df_all$gender <- as.factor(df_all$gender)
 df_all$gender_numeric <- as.numeric(df_all$gender) - 1
 
 # anticoagulation to 0/1
-df_all$anticoagulant <- as.factor(df_all$gender)
+df_all$anticoagulant <- as.factor(df_all$anticoagulant)
 df_all$anticoagulant_numeric <- as.numeric(df_all$anticoagulant) - 1
 
 # split
@@ -162,14 +162,14 @@ prop.test(
 
 
 # anticoagulant ----------------------------------------------------------------
-# close: 50 ± 9.1%, high_density: 65.52 ± 8.79%
+# close: 83.33 ± 6.87%, high_density: 82.76 ± 6.94%
 sum(df_close$anticoagulant_numeric) / nrow(df_close)
 boot_sd(df_close$anticoagulant_numeric)
 
 sum(df_high_density$anticoagulant_numeric) / nrow(df_high_density)
 boot_sd(df_high_density$anticoagulant_numeric)
 
-# proportions test, p = 0.35
+# proportions test, p = 1
 prop.test(
   x = c(
     sum(df_close$anticoagulant_numeric),
@@ -181,13 +181,13 @@ prop.test(
 
 # probnp -----------------------------------------------------------------------
 # close 255.21 ± 169.69
-close_probnp <- df_close$probnp[!is.na(df_close$probnp)]
+close_probnp <- na.omit(as.numeric(df_close$probnp))
 mean(close_probnp)
 sd(close_probnp)
 
 # high_density 323.3 ± 501.06
 # drop NA
-high_density_probnp <- df_high_density$probnp[!is.na(df_high_density$probnp)]
+high_density_probnp <- na.omit(as.numeric(df_high_density$probnp))
 mean(high_density_probnp)
 sd(high_density_probnp)
 

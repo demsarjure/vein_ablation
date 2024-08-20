@@ -190,12 +190,16 @@ df_veins <- df_cm_hd_counts %>%
   group_by(procedure_type) %>%
   summarize(veins = sum(n * number_of_isolated_veins))
 
+# labels
+df_veins$procedure_type[df_veins$procedure_type == "Close"] <- "CM group"
+df_veins$procedure_type[df_veins$procedure_type == "High density"] <- "HD group"
+
 # plot
 ggplot(df_veins, aes(x = procedure_type, y = veins)) +
   geom_bar(stat = "identity", fill = c("grey25", "grey75")) +
   geom_text(aes(label = veins), vjust = -0.5) +
   ylab("Pulmonary veins") +
-  xlab("Procedure type") +
+  xlab("") +
   ylim(0, 115) +
   theme_minimal()
 

@@ -181,11 +181,11 @@ cti_high_density <- c(rep(1, n_cti_high_density), rep(0, nrow(df_high_density) -
 sum(cti_close / length(cti_close))
 boot_sd(cti_close)
 
-# 13.33 ± 6.15%
+# 13.79 ± 6.36%
 sum(cti_high_density / length(cti_high_density))
 boot_sd(cti_high_density)
 
-# proportions test, p = 0.67
+# proportions test, p = 0.64
 prop.test(
   x = c(
     sum(cti_close),

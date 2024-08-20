@@ -34,9 +34,15 @@ close <- na.omit(df_close$dormant_rspv_rr)
 sum(close)
 boot_sd_sum(close)
 
+# 20.69%
+sum(close) / length(close)
+
 high_density <- na.omit(df_high_density$dormant_rspv_rr)
 sum(high_density)
 boot_sd_sum(high_density)
+
+# 3.45%
+sum(high_density) / length(high_density)
 
 # test, p = 0.047
 wilcox.test(close, high_density)
@@ -46,16 +52,22 @@ sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
     (length(close) + length(high_density))
 
-t
+
 # rspv_ra ----------------------------------------------------------------------
 # close: 3 ± 1.65, high_density: 2 ± 1.35
 close <- na.omit(df_close$dormant_rspv_ra)
 sum(close)
 boot_sd_sum(close)
 
+# 10.34%
+sum(close) / length(close)
+
 high_density <- na.omit(df_high_density$dormant_rspv_ra)
 sum(high_density)
 boot_sd_sum(high_density)
+
+# 6.9%
+sum(high_density) / length(high_density)
 
 # test, p = 0.72
 wilcox.test(close, high_density)
@@ -72,9 +84,15 @@ close <- na.omit(df_close$dormant_rspv_rp)
 sum(close)
 boot_sd_sum(close)
 
+# 13.79%
+sum(close) / length(close)
+
 high_density <- na.omit(df_high_density$dormant_rspv_rp)
 sum(high_density)
 boot_sd_sum(high_density)
+
+# 3.45%
+sum(high_density) / length(high_density)
 
 # test, p = 0.17
 wilcox.test(close, high_density)
@@ -91,9 +109,15 @@ close <- na.omit(df_close$dormant_ripv_ra)
 sum(close)
 boot_sd_sum(close)
 
+# 0%
+sum(close) / length(close)
+
 high_density <- na.omit(df_high_density$dormant_ripv_ra)
 sum(high_density)
 boot_sd_sum(high_density)
+
+# 0%
+sum(high_density) / length(high_density)
 
 # test, p = 1
 wilcox.test(close, high_density)
@@ -110,9 +134,15 @@ close <- na.omit(df_close$dormant_ripv_rp)
 sum(close)
 boot_sd_sum(close)
 
+# 13.79%
+sum(close) / length(close)
+
 high_density <- na.omit(df_high_density$dormant_ripv_rp)
 sum(high_density)
 boot_sd_sum(high_density)
+
+# 6.9%
+sum(high_density) / length(high_density)
 
 # test, p = 0.4
 wilcox.test(close, high_density)
@@ -129,9 +159,15 @@ close <- na.omit(df_close$dormant_ripv_ri)
 sum(close)
 boot_sd_sum(close)
 
+# 0%
+sum(close) / length(close)
+
 high_density <- na.omit(df_high_density$dormant_ripv_ri)
 sum(high_density)
 boot_sd_sum(high_density)
+
+# 0%
+sum(high_density) / length(high_density)
 
 # test, p = 1
 wilcox.test(close, high_density)
@@ -148,9 +184,15 @@ close <- na.omit(df_close$dormant_lspv_lr)
 sum(close)
 boot_sd_sum(close)
 
+# 3.45%
+sum(close) / length(close)
+
 high_density <- na.omit(df_high_density$dormant_lspv_lr)
 sum(high_density)
 boot_sd_sum(high_density)
+
+# 0%
+sum(high_density) / length(high_density)
 
 # test, p = 0.33
 wilcox.test(close, high_density)
@@ -167,9 +209,15 @@ close <- na.omit(df_close$dormant_lspv_lrg)
 sum(close)
 boot_sd_sum(close)
 
+# 17.24%
+sum(close) / length(close)
+
 high_density <- na.omit(df_high_density$dormant_lspv_lrg)
 sum(high_density)
 boot_sd_sum(high_density)
+
+# 3.45%
+sum(high_density) / length(high_density)
 
 # test, p = 0.09
 wilcox.test(close, high_density)
@@ -186,9 +234,15 @@ close <- na.omit(df_close$dormant_lspv_lp)
 sum(close)
 boot_sd_sum(close)
 
+# 13.79%
+sum(close) / length(close)
+
 high_density <- na.omit(df_high_density$dormant_lspv_lp)
 sum(high_density)
 boot_sd_sum(high_density)
+
+# 0%
+sum(high_density) / length(high_density)
 
 # test, p = 0.08
 wilcox.test(close, high_density)
@@ -205,9 +259,15 @@ close <- na.omit(df_close$dormant_lipv_la)
 sum(close)
 boot_sd_sum(close)
 
+# 13.79%
+sum(close) / length(close)
+
 high_density <- na.omit(df_high_density$dormant_lipv_la)
 sum(high_density)
 boot_sd_sum(high_density)
+
+# 0%
+sum(high_density) / length(high_density)
 
 # test, p = 0.04
 wilcox.test(close, high_density)
@@ -224,9 +284,15 @@ close <- na.omit(df_close$dormant_lipv_li)
 sum(close)
 boot_sd_sum(close)
 
+# 0%
+sum(close) / length(close)
+
 high_density <- na.omit(df_high_density$dormant_lipv_li)
 sum(high_density)
 boot_sd_sum(high_density)
+
+# 0%
+sum(high_density) / length(high_density)
 
 # test, p = 1
 wilcox.test(close, high_density)
@@ -243,9 +309,15 @@ close <- na.omit(df_close$dormant_lipv_lp)
 sum(close)
 boot_sd_sum(close)
 
+# 10.34%
+sum(close) / length(close)
+
 high_density <- na.omit(df_high_density$dormant_lipv_lp)
 sum(high_density)
 boot_sd_sum(high_density)
+
+# 0%
+sum(high_density) / length(high_density)
 
 # test, p = 0.08
 wilcox.test(close, high_density)

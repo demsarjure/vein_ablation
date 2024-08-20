@@ -154,7 +154,7 @@ df_survivability$group[df_survivability$group == "high_density"] <- "High densit
 # plot
 ggplot(df_survivability, aes(x = time, y = surv, color = group)) +
   geom_line(linewidth = 1) +
-  labs(x = "Time (days)", y = "Survivability (%)") +
+  labs(x = "Time (days)", y = "Freedom from AF (%)") +
   scale_color_manual(values = c("grey25", "grey75")) +
   ylim(0, 100) +
   theme(legend.title = element_blank()) +

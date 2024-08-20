@@ -112,7 +112,7 @@ boot_sd_sum(1 - close)
 length(high_density) - sum(high_density)
 boot_sd_sum(1 - high_density)
 
-# 5, 9.09%
+# 5, 8.47%t
 all <- na.omit(df_all$rspv_rp_isolation)
 length(all) - sum(all)
 1 - (sum(all) / length(all))
@@ -389,7 +389,7 @@ boot_sd_sum(1 - high_density)
 # 2, 3.64
 all <- na.omit(df_all$lipv_la_isolation)
 length(all) - sum(all)
-1 - (sum(all) / length(all))
+t1 - (sum(all) / length(all))
 
 
 # lipv_li ----------------------------------------------------------------------
