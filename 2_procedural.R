@@ -175,7 +175,10 @@ n_cti_close <- 2
 cti_close <- c(rep(1, n_cti_close), rep(0, nrow(df_close) - n_cti_close))
 
 n_cti_high_density <- 4
-cti_high_density <- c(rep(1, n_cti_high_density), rep(0, nrow(df_high_density) - n_cti_high_density))
+cti_high_density <- c(
+  rep(1, n_cti_high_density),
+  rep(0, nrow(df_high_density) - n_cti_high_density)
+)
 
 # 6.67 ± 4.52%
 sum(cti_close / length(cti_close))

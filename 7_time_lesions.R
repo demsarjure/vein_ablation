@@ -82,4 +82,3 @@ sd(high_density)
 
 # test p = 0.32
 wilcox.test(close, high_density)
-

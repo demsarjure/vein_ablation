@@ -220,7 +220,10 @@ boot_sd(df_high_density$hypertension_history)
 
 # proportions test, p = 0.36
 prop.test(
-  x = c(sum(df_close$hypertension_history), sum(df_high_density$hypertension_history)),
+  x = c(
+    sum(df_close$hypertension_history),
+    sum(df_high_density$hypertension_history)
+  ),
   n = c(nrow(df_close), nrow(df_high_density))
 )
 

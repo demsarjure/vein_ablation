@@ -48,7 +48,10 @@ sd(df_high_density$percentage_of_isolated_veins)
 
 # proportions test, p = 0.02
 prop.test(
-  x = c(sum(df_close$number_of_isolated_veins), sum (df_high_density$number_of_isolated_veins)),
+  x = c(
+    sum(df_close$number_of_isolated_veins),
+    sum(df_high_density$number_of_isolated_veins)
+  ),
   n = c(nrow(df_close) * 4, nrow(df_high_density) * 4)
 )
 
@@ -64,7 +67,10 @@ boot_sd(df_high_density$all_4_veins_isolated)
 
 # proportions test, p = 0.02
 prop.test(
-  x = c(sum(df_close$all_4_veins_isolated), sum(df_high_density$all_4_veins_isolated)),
+  x = c(
+    sum(df_close$all_4_veins_isolated),
+    sum(df_high_density$all_4_veins_isolated)
+  ),
   n = c(nrow(df_close), nrow(df_high_density))
 )
 
@@ -121,7 +127,10 @@ for (i in 1:n_boot) {
 
   # merge
   df_merged <- data.frame(
-    procedure_type = c(rep("close", length(boot_close)), rep("high_density", length(boot_high_density))),
+    procedure_type = c(
+      rep("close", length(boot_close)),
+      rep("high_density", length(boot_high_density))
+    ),
     number_of_isolated_veins = c(boot_close, boot_high_density)
   )
 

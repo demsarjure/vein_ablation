@@ -11,7 +11,24 @@ df_all <- read_excel("data/cleaned.xlsx")
 
 # subset
 df_all <- df_all %>%
-  select(procedure_type, procedure_date, recidiv, number_of_isolated_veins, dormant_rspv_rr, dormant_rspv_ra, dormant_rspv_rp, dormant_ripv_ra, dormant_ripv_rp, dormant_ripv_ri, dormant_lspv_lr, dormant_lspv_lrg, dormant_lspv_lp, dormant_lipv_la, dormant_lipv_li, dormant_lipv_lp)
+  select(
+    procedure_type,
+    procedure_date,
+    recidiv,
+    number_of_isolated_veins,
+    dormant_rspv_rr,
+    dormant_rspv_ra,
+    dormant_rspv_rp,
+    dormant_ripv_ra,
+    dormant_ripv_rp,
+    dormant_ripv_ri,
+    dormant_lspv_lr,
+    dormant_lspv_lrg,
+    dormant_lspv_lp,
+    dormant_lipv_la,
+    dormant_lipv_li,
+    dormant_lipv_lp
+  )
 
 # recidiv true/false
 df_all$had_recidiv <- ifelse(is.na(df_all$recidiv), 0, 1)
@@ -38,8 +55,10 @@ df_recidiv <- drop_na(df_all)
 df_recidiv$diff <- df_recidiv$recidiv - df_recidiv$procedure_date
 
 # split
-df_recidiv_close <- df_recidiv %>% filter(procedure_type == "close")
-df_recidiv_high_density <- df_recidiv %>% filter(procedure_type == "high_density")
+df_recidiv_close <- df_recidiv %>%
+  filter(procedure_type == "close")
+df_recidiv_high_density <- df_recidiv %>%
+  filter(procedure_type == "high_density")
 
 
 # percentage/number of recidivs between groups ---------------------------------
@@ -142,14 +161,17 @@ df_survivability <- df_survivability %>%
   add_row(
     data.frame(
       time = max(df_survivability$time),
-      surv = min(df_survivability$surv[df_survivability$group == "high_density"]),
+      surv =
+        min(df_survivability$surv[df_survivability$group == "high_density"]),
       group = "high_density"
     )
   )
 
 # replace
-df_survivability$group[df_survivability$group == "close"] <- "Close"
-df_survivability$group[df_survivability$group == "high_density"] <- "High density"
+df_survivability$group[df_survivability$group == "close"] <-
+  "Close"
+df_survivability$group[df_survivability$group == "high_density"] <-
+  "High density"
 
 # plot
 ggplot(df_survivability, aes(x = time, y = surv, color = group)) +
@@ -172,7 +194,7 @@ ggsave(
 
 
 # is recidiv correlated with the number of reconnected veins -------------------
-df_reconnected <- df_all %>% 
+df_reconnected <- df_all %>%
   select(procedure_type, number_of_reconnected_veins, had_recidiv)
 df_reconnected <- drop_na(df_reconnected)
 df_recidiv_reconnected <- df_reconnected %>% filter(had_recidiv == 1)
@@ -192,8 +214,23 @@ wilcox.test(recidiv, no_recidiv)
 
 
 # is recidiv correlated with the number of dormants ----------------------------
-df_dormant <- df_all %>% 
-  select(procedure_type, had_recidiv, dormant_rspv_rr, dormant_rspv_ra, dormant_rspv_rp, dormant_ripv_ra, dormant_ripv_rp, dormant_ripv_ri, dormant_lspv_lr, dormant_lspv_lrg, dormant_lspv_lp, dormant_lipv_la, dormant_lipv_li, dormant_lipv_lp)
+df_dormant <- df_all %>%
+  select(
+    procedure_type,
+    had_recidiv,
+    dormant_rspv_rr,
+    dormant_rspv_ra,
+    dormant_rspv_rp,
+    dormant_ripv_ra,
+    dormant_ripv_rp,
+    dormant_ripv_ri,
+    dormant_lspv_lr,
+    dormant_lspv_lrg,
+    dormant_lspv_lp,
+    dormant_lipv_la,
+    dormant_lipv_li,
+    dormant_lipv_lp
+  )
 
 df_dormant <- drop_na(df_dormant)
 df_recidiv_dormant <- df_dormant %>% filter(had_recidiv == 1)

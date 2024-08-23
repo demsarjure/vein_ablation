@@ -50,7 +50,7 @@ wilcox.test(close, high_density)
 # 7, 12.07%
 sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
-    (length(close) + length(high_density))
+  (length(close) + length(high_density))
 
 
 # rspv_ra ----------------------------------------------------------------------
@@ -75,7 +75,7 @@ wilcox.test(close, high_density)
 # 5, 8.62%
 sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
-    (length(close) + length(high_density))
+  (length(close) + length(high_density))
 
 
 # rspv_rp ----------------------------------------------------------------------
@@ -100,7 +100,7 @@ wilcox.test(close, high_density)
 # 5, 8.62%
 sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
-    (length(close) + length(high_density))
+  (length(close) + length(high_density))
 
 
 # ripv_ra ----------------------------------------------------------------------
@@ -125,7 +125,7 @@ wilcox.test(close, high_density)
 # 0
 sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
-    (length(close) + length(high_density))
+  (length(close) + length(high_density))
 
 
 # ripv_rp ----------------------------------------------------------------------
@@ -150,7 +150,7 @@ wilcox.test(close, high_density)
 # 6, 10.34%
 sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
-    (length(close) + length(high_density))
+  (length(close) + length(high_density))
 
 
 # ripv_ri ----------------------------------------------------------------------
@@ -175,7 +175,7 @@ wilcox.test(close, high_density)
 # 0
 sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
-    (length(close) + length(high_density))
+  (length(close) + length(high_density))
 
 
 # lspv_lr ----------------------------------------------------------------------
@@ -200,7 +200,7 @@ wilcox.test(close, high_density)
 # 1, 1.72%
 sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
-    (length(close) + length(high_density))
+  (length(close) + length(high_density))
 
 
 # lspv_lrg ---------------------------------------------------------------------
@@ -225,7 +225,7 @@ wilcox.test(close, high_density)
 # 6, 10.34%
 sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
-    (length(close) + length(high_density))
+  (length(close) + length(high_density))
 
 
 # lspv_lp ----------------------------------------------------------------------
@@ -250,7 +250,7 @@ wilcox.test(close, high_density)
 # 4, 6.9%
 sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
-    (length(close) + length(high_density))
+  (length(close) + length(high_density))
 
 
 # lipv_la ----------------------------------------------------------------------
@@ -275,7 +275,7 @@ wilcox.test(close, high_density)
 # 4, 6.9%
 sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
-    (length(close) + length(high_density))
+  (length(close) + length(high_density))
 
 
 # lipv_li ----------------------------------------------------------------------
@@ -300,7 +300,7 @@ wilcox.test(close, high_density)
 # 0
 sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
-    (length(close) + length(high_density))
+  (length(close) + length(high_density))
 
 
 # lipv_lp ----------------------------------------------------------------------
@@ -325,12 +325,12 @@ wilcox.test(close, high_density)
 # 3, 5.17t%
 sum(close) + sum(high_density)
 (sum(close) + sum(high_density)) /
-    (length(close) + length(high_density))
+  (length(close) + length(high_density))
 
 
 # group comparisons ------------------------------------------------------------
 close_all <- c(
-    na.omit(df_close$dormant_rspv_rr) +
+  na.omit(df_close$dormant_rspv_rr) +
     na.omit(df_close$dormant_rspv_ra) +
     na.omit(df_close$dormant_rspv_rp) +
     na.omit(df_close$dormant_ripv_rp) +
@@ -339,10 +339,11 @@ close_all <- c(
     na.omit(df_close$dormant_lspv_lp) +
     na.omit(df_close$dormant_lipv_la) +
     na.omit(df_close$dormant_lipv_li) +
-    na.omit(df_close$dormant_lipv_lp))
+    na.omit(df_close$dormant_lipv_lp)
+)
 
 high_density_all <- c(
-    na.omit(df_high_density$dormant_rspv_rr) +
+  na.omit(df_high_density$dormant_rspv_rr) +
     na.omit(df_high_density$dormant_rspv_ra) +
     na.omit(df_high_density$dormant_rspv_rp) +
     na.omit(df_high_density$dormant_ripv_rp) +
@@ -351,7 +352,8 @@ high_density_all <- c(
     na.omit(df_high_density$dormant_lspv_lp) +
     na.omit(df_high_density$dormant_lipv_la) +
     na.omit(df_high_density$dormant_lipv_li) +
-    na.omit(df_high_density$dormant_lipv_lp))
+    na.omit(df_high_density$dormant_lipv_lp)
+)
 
 # close: 34 ± 5.06, high_density: 7 ± 2.31
 sum(close_all)
@@ -362,3 +364,114 @@ boot_sd_sum(high_density_all)
 
 # test p = 0.00002
 wilcox.test(close_all, high_density_all)
+
+
+# rspv -------------------------------------------------------------------------
+# close: 13 ± 3.65, high_density: 4 ± 1.94
+close <- c(
+  na.omit(df_close$dormant_rspv_rr),
+  na.omit(df_close$dormant_rspv_ra),
+  na.omit(df_close$dormant_rspv_rp)
+)
+sum(close)
+boot_sd_sum(close)
+
+# 14.94%
+sum(close) / length(close)
+
+high_density <- c(
+  na.omit(df_high_density$dormant_rspv_rr),
+  na.omit(df_high_density$dormant_rspv_ra),
+  na.omit(df_high_density$dormant_rspv_rp)
+)
+sum(high_density)
+boot_sd_sum(high_density)
+
+# 4.6%
+sum(high_density) / length(high_density)
+
+# test, p = 0.02
+wilcox.test(close, high_density)
+
+# ripv -------------------------------------------------------------------------
+# close: 4 ± 1.86, high_density: 2 ± 1.4
+close <- c(
+  na.omit(df_close$dormant_ripv_rp),
+  na.omit(df_close$dormant_ripv_ra),
+  na.omit(df_close$dormant_ripv_ri)
+)
+sum(close)
+boot_sd_sum(close)
+
+# 13.79%
+sum(close) / length(close)
+
+high_density <- c(
+  na.omit(df_high_density$dormant_ripv_rp),
+  na.omit(df_high_density$dormant_ripv_ra),
+  na.omit(df_high_density$dormant_ripv_ri)
+)
+sum(high_density)
+boot_sd_sum(high_density)
+
+# 2.3%
+sum(high_density) / length(high_density)
+
+# test, p = 0.41
+wilcox.test(close, high_density)
+
+
+# lspv -------------------------------------------------------------------------
+# close: 10 ± 3.31, high_density: 1 ± 0.98
+close <- c(
+  na.omit(df_close$dormant_lspv_lr),
+  na.omit(df_close$dormant_lspv_lrg),
+  na.omit(df_close$dormant_lspv_lp)
+)
+sum(close)
+boot_sd_sum(close)
+
+# 10.34%
+sum(close) / length(close)
+
+high_density <- c(
+  na.omit(df_high_density$dormant_lspv_lr),
+  na.omit(df_high_density$dormant_lspv_lrg),
+  na.omit(df_high_density$dormant_lspv_lp)
+)
+sum(high_density)
+boot_sd_sum(high_density)
+
+# 1.15%
+sum(high_density) / length(high_density)
+
+# test, p = 0.01
+wilcox.test(close, high_density)
+
+
+# lipv -------------------------------------------------------------------------
+# close: 7 ± 2.56, high_density: 0 ± 0
+close <- c(
+  na.omit(df_close$dormant_lipv_la),
+  na.omit(df_close$dormant_lipv_li),
+  na.omit(df_close$dormant_lipv_lp)
+)
+sum(close)
+boot_sd_sum(close)
+
+# 8.05%
+sum(close) / length(close)
+
+high_density <- c(
+  na.omit(df_high_density$dormant_lipv_la),
+  na.omit(df_high_density$dormant_lipv_li),
+  na.omit(df_high_density$dormant_lipv_lp)
+)
+sum(high_density)
+boot_sd_sum(high_density)
+
+# 0%
+sum(high_density) / length(high_density)
+
+# test, p = 0.01
+wilcox.test(close, high_density)
