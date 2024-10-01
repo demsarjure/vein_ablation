@@ -26,16 +26,11 @@ df_all$diff <- df_all$reintervention_date - df_all$procedure_date
 df_close <- df_all %>% filter(procedure_type == "close")
 df_high_density <- df_all %>% filter(procedure_type == "high_density")
 
+
 # summary statistics -----------------------------------------------------------
-# close 442.47 ± 93.86
-mean(df_close$diff)
-sd(df_close$diff)
+report_mean_ci(df_all$diff)
+report_mean_ci(df_high_density$diff)
 
-# high_density 386.76 ± 99.82
-mean(df_high_density$diff)
-sd(df_high_density$diff)
-
-# test p = 0.09
 wilcox.test(as.numeric(df_close$diff), as.numeric(df_high_density$diff))
 
 

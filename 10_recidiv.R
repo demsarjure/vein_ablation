@@ -62,24 +62,12 @@ df_recidiv_high_density <- df_recidiv %>%
 
 
 # percentage/number of recidivs between groups ---------------------------------
-# close: 10 ± 2.57, high_density: 7 ± 2.29
-sum(df_close$had_recidiv)
-boot_sd_sum(df_close$had_recidiv)
-
-sum(df_high_density$had_recidiv)
-boot_sd_sum(df_high_density$had_recidiv)
-
-# test p = 0.4
+report_sum_ci(df_close$had_recidiv)
+report_sum_ci(df_high_density$had_recidiv)
 wilcox.test(df_close$had_recidiv, df_high_density$had_recidiv)
 
-# close: 33.33 ± 8.59%, high_density: 24.14 ± 7.94%
-sum(df_close$had_recidiv) / nrow(df_close)
-boot_sd(df_close$had_recidiv)
-
-sum(df_high_density$had_recidiv) / nrow(df_high_density)
-boot_sd(df_high_density$had_recidiv)
-
-# proportions test, p = 0.62
+report_prop_ci(df_close$had_recidiv)
+report_prop_ci(df_high_density$had_recidiv)
 prop.test(
   x = c(
     sum(df_close$had_recidiv),
@@ -90,13 +78,8 @@ prop.test(
 
 
 # duration between the procedure and the recidiv -------------------------------
-# close 224.6 ± 101.14
-mean(df_recidiv_close$diff)
-sd(df_recidiv_close$diff)
-
-# high_density 149.29 ± 69.37
-mean(df_recidiv_high_density$diff)
-sd(df_recidiv_high_density$diff)
+report_mean_ci(df_recidiv_close$diff)
+report_mean_ci(df_recidiv_high_density$diff)
 
 
 # survival analysis ------------------------------------------------------------
@@ -200,16 +183,12 @@ df_reconnected <- drop_na(df_reconnected)
 df_recidiv_reconnected <- df_reconnected %>% filter(had_recidiv == 1)
 df_no_recidiv_reconnected <- df_reconnected %>% filter(had_recidiv == 0)
 
-# close: 0.76 ± 1.25, high_density: 0.45 ± 0.63
 recidiv <- df_recidiv_reconnected$number_of_reconnected_veins
-mean(recidiv)
-sd(recidiv)
+report_mean_ci(recidiv)
 
 no_recidiv <- df_no_recidiv_reconnected$number_of_reconnected_veins
-mean(no_recidiv)
-sd(no_recidiv)
+report_mean_ci(no_recidiv)
 
-# test p = 0.76
 wilcox.test(recidiv, no_recidiv)
 
 
@@ -236,7 +215,6 @@ df_dormant <- drop_na(df_dormant)
 df_recidiv_dormant <- df_dormant %>% filter(had_recidiv == 1)
 df_no_recidiv_dormant <- df_dormant %>% filter(had_recidiv == 0)
 
-# close: 0.06 ± 0.24, high_density: 0.06 ± 0.24
 recidiv <- c(
   df_recidiv_dormant$dormant_rspv_rr,
   df_recidiv_dormant$dormant_rspv_ra,
@@ -251,8 +229,7 @@ recidiv <- c(
   df_recidiv_dormant$dormant_lipv_li,
   df_recidiv_dormant$dormant_lipv_lp
 )
-mean(recidiv)
-sd(recidiv)
+report_mean_ci(recidiv)
 
 no_recidiv <- c(
   df_no_recidiv_dormant$dormant_rspv_rr,
@@ -268,8 +245,6 @@ no_recidiv <- c(
   df_no_recidiv_dormant$dormant_lipv_li,
   df_no_recidiv_dormant$dormant_lipv_lp
 )
-mean(no_recidiv)
-sd(no_recidiv)
+report_mean_ci(no_recidiv)
 
-# test p = 0.65
 wilcox.test(recidiv, no_recidiv)
