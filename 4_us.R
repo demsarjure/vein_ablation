@@ -1,6 +1,8 @@
 library(tidyverse)
 library(readxl)
 
+source("utils.R")
+
 
 # preprocessing ----------------------------------------------------------------
 df_all <- read_excel("data/cleaned.xlsx")

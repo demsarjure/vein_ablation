@@ -3,6 +3,8 @@ library(readxl)
 library(survival)
 library(survminer)
 
+source("utils.R")
+
 
 # preprocessing ----------------------------------------------------------------
 df_all <- read_excel("data/cleaned.xlsx")
