@@ -37,15 +37,6 @@ wilcox.test(
 report_mean_ci_prop(df_close$percentage_of_isolated_veins)
 report_mean_ci_prop(df_high_density$percentage_of_isolated_veins)
 
-# close 80.83 ± 23.38%
-mean(df_close$percentage_of_isolated_veins)
-sd(df_close$percentage_of_isolated_veins)
-
-# high_density 92.24 ± 17.81%
-mean(df_high_density$percentage_of_isolated_veins)
-sd(df_high_density$percentage_of_isolated_veins)
-
-# proportions test, p = 0.02
 prop.test(
   x = c(
     sum(df_close$number_of_isolated_veins),
@@ -69,21 +60,20 @@ prop.test(
 
 
 # plot number of isolated veins close vs high density --------------------------
+# close 3.23 [2.9, 3.53]
+# hd 3.69 [3.41, 3.93]
 # summarize mean + sd per group
-df_cm_hd <- df_all %>%
-  group_by(procedure_type) %>%
-  summarize(
-    mean = mean(number_of_isolated_veins),
-    sd = sd(number_of_isolated_veins)
-  )
-
-# labels
-df_cm_hd$procedure_type <- c("Close", "High density")
+df_isolated <- data.frame(
+  procedure_type = c("Close", "High density"),
+  mean = c(3.23, 3.69),
+  lower_ci = c(2.9, 3.41),
+  upper_ci = c(3.53, 3.93)
+)
 
 # plot per type
-ggplot(df_cm_hd, aes(x = mean, y = procedure_type)) +
+ggplot(df_isolated, aes(x = mean, y = procedure_type)) +
   geom_errorbarh(
-    aes(xmin = mean - sd, xmax = 4),
+    aes(xmin = lower_ci, xmax = upper_ci),
     linewidth = 1,
     height = 0.2,
     color = "grey50"
@@ -107,73 +97,162 @@ ggsave(
 
 # plot counts of isolated veins per group --------------------------------------
 # bootstrap 1000 times
-df_cm_hd_sd <- data.frame(
+df_isolated_boot <- data.frame(
   procedure_type = character(),
   number_of_isolated_veins = numeric(),
   n = numeric()
 )
-n_boot <- 1000
+
+n_boot <- 10
 for (i in 1:n_boot) {
+  # close
   boot_close <- sample(df_close$number_of_isolated_veins, replace = TRUE)
+
+  # count distinct values in boot_close
+  df_close_temp <- data.frame(
+    number_of_isolated_veins = boot_close
+  ) %>%
+    group_by(number_of_isolated_veins) %>%
+    summarize(n = n())
+
+  # add empty rows for number_of_isolated_veins from 0 to 4 that are missing
+  df_close_temp <- as.data.frame(df_close_temp)
+  df_close_temp$number_of_isolated_veins <-
+    factor(df_close_temp$number_of_isolated_veins, levels = 0:4)
+  df_close_temp <- df_close_temp %>%
+    complete(
+      number_of_isolated_veins,
+      fill = list(n = 0)
+    )
+
+  # hd
   boot_high_density <-
     sample(df_high_density$number_of_isolated_veins, replace = TRUE)
 
-  # merge
-  df_merged <- data.frame(
-    procedure_type = c(
-      rep("close", length(boot_close)),
-      rep("high_density", length(boot_high_density))
-    ),
-    number_of_isolated_veins = c(boot_close, boot_high_density)
-  )
-
-  # get mean
-  df_cm_hd_sd_boot <- df_merged %>%
-    group_by(procedure_type, number_of_isolated_veins) %>%
+  # count distinct values in boot_close
+  df_high_density_temp <- data.frame(
+    number_of_isolated_veins = boot_high_density
+  ) %>%
+    group_by(number_of_isolated_veins) %>%
     summarize(n = n())
 
-  # append to df_cm_hd_sd
-  df_cm_hd_sd <- rbind(df_cm_hd_sd, df_cm_hd_sd_boot)
+  # add empty rows for number_of_isolated_veins from 0 to 4 that are missing
+  df_high_density_temp <- as.data.frame(df_high_density_temp)
+  df_high_density_temp$number_of_isolated_veins <-
+    factor(df_high_density_temp$number_of_isolated_veins, levels = 0:4)
+  df_high_density_temp <- df_high_density_temp %>%
+    complete(
+      number_of_isolated_veins,
+      fill = list(n = 0)
+    )
+
+  # merge
+  df_isolated_boot <- rbind(
+    df_isolated_boot,
+    data.frame(
+      procedure_type = "close",
+      number_of_isolated_veins = df_close_temp$number_of_isolated_veins,
+      n = df_close_temp$n
+    ),
+    data.frame(
+      procedure_type = "high_density",
+      number_of_isolated_veins = df_high_density_temp$number_of_isolated_veins,
+      n = df_high_density_temp$n
+    )
+  )
 }
 
-# get sd per group and number_isolated_veins
-df_cm_hd_sd <- df_cm_hd_sd %>%
+# get CI per group and number_isolated_veins
+df_isolated_ci <- df_isolated_boot %>%
   group_by(procedure_type, number_of_isolated_veins) %>%
-  summarize(sd = sd(n))
+  summarize(lower_ci = quantile(n, 0.025), upper_ci = quantile(n, 0.975))
 
 # counts
-df_cm_hd_counts <- df_all %>%
+df_isolated_counts <- df_all %>%
   group_by(procedure_type, number_of_isolated_veins) %>%
   summarize(n = n())
-df_cm_hd_counts$sd <- df_cm_hd_sd$sd
-df_cm_hd_counts <- as.data.frame(df_cm_hd_counts)
 
 # add missing rows
-df_cm_hd_counts <- df_cm_hd_counts %>%
-  complete(procedure_type, number_of_isolated_veins, fill = list(n = 0, sd = 0))
+df_isolated_counts <- as.data.frame(df_isolated_counts)
+df_isolated_counts <- df_isolated_counts %>%
+  complete(
+    procedure_type,
+    number_of_isolated_veins,
+    fill = list(n = 0, lower_ci = 0, upper_ci = 0)
+  )
+
+# add CI
+df_isolated <- df_isolated_counts
+df_isolated$lower_ci <- df_isolated_ci$lower_ci
+df_isolated$upper_ci <- df_isolated_ci$upper_ci
 
 # labels, replace close with Close, high_density with High density
-df_cm_hd_counts$procedure_type[df_cm_hd_counts$procedure_type == "close"] <- "Close"
-df_cm_hd_counts$procedure_type[df_cm_hd_counts$procedure_type == "high_density"] <- "High density"
+df_isolated$procedure_type[df_isolated$procedure_type == "close"] <- "Close"
+df_isolated$procedure_type[df_isolated$procedure_type == "high_density"] <- "High density"
+
+# calculate p-values
+df_p_values <- NULL
+for (i in 0:4) {
+  df_n <- df_isolated %>%
+    filter(number_of_isolated_veins == i)
+  close_isolated <- (df_n %>% filter(procedure_type == "Close"))$n
+  hd_isolated <- (df_n %>% filter(procedure_type == "High density"))$n
+
+  # create vectors
+  p <- prop.test(
+    x = c(close_isolated, hd_isolated),
+    n = c(nrow(df_close), nrow(df_high_density))
+  )$p.value
+
+  # round
+  p <- round(p, 2)
+
+  df_p_values <-
+    rbind(df_p_values, data.frame(number_of_isolated_veins = i, p_value = p))
+}
+
+# max value for each number of isolated veins
+df_max <- df_isolated %>%
+  group_by(number_of_isolated_veins) %>%
+  summarize(max_y = max(upper_ci) + 0.5)
+
+# add max to p_values
+df_p_values <- merge(df_p_values, df_max, by = "number_of_isolated_veins")
 
 # plot per type per count
 ggplot(
-  df_cm_hd_counts,
+  df_isolated,
   aes(x = number_of_isolated_veins, y = n, fill = procedure_type)
 ) +
-  geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+  geom_bar(
+    stat = "identity",
+    position = "dodge",
+    width = 0.8
+  ) +
   geom_errorbar(
     position = position_dodge(0.8),
-    aes(ymin = n - sd, ymax = n + sd),
+    aes(ymin = lower_ci, ymax = upper_ci),
     linewidth = 0.5,
     width = 0.5,
     color = "black"
   ) +
+  geom_text(
+    data = df_p_values,
+    aes(
+      x = number_of_isolated_veins,
+      y = max_y,
+      label = paste0("p = ", p_value),
+      fill = NULL
+    ),
+    position = position_dodge(0.8),
+    vjust = -0.5,
+    size = 2.5
+  ) +
   scale_fill_manual(values = c("grey25", "grey75")) +
   ylab("Patients") +
   xlab("Number of durably isolated pulmonary veins") +
-  theme(legend.title = element_blank()) +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.title = element_blank())
 
 # save as a png
 ggsave(
