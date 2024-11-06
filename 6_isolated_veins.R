@@ -219,6 +219,10 @@ df_max <- df_isolated %>%
 # add max to p_values
 df_p_values <- merge(df_p_values, df_max, by = "number_of_isolated_veins")
 
+# change procedure_type Close to CM group, High density to HD group
+df_isolated$procedure_type[df_isolated$procedure_type == "Close"] <- "CM group"
+df_isolated$procedure_type[df_isolated$procedure_type == "High density"] <- "HD group"
+
 # plot per type per count
 ggplot(
   df_isolated,
