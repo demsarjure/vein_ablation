@@ -152,9 +152,9 @@ df_survivability <- df_survivability %>%
 
 # replace
 df_survivability$group[df_survivability$group == "close"] <-
-  "Close"
+  "CM group"
 df_survivability$group[df_survivability$group == "high_density"] <-
-  "High density"
+  "HD group"
 
 # plot
 ggplot(df_survivability, aes(x = time, y = surv, color = group)) +
@@ -162,8 +162,8 @@ ggplot(df_survivability, aes(x = time, y = surv, color = group)) +
   labs(x = "Time (days)", y = "Freedom from AF (%)") +
   scale_color_manual(values = c("grey25", "grey75")) +
   ylim(0, 100) +
-  theme(legend.title = element_blank()) +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.title = element_blank())
 
 # save as a png
 ggsave(
