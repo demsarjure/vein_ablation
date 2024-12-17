@@ -132,3 +132,15 @@ prop.test(
   ),
   n = c(length(cti_close), length(cti_high_density))
 )
+
+
+# complication -----------------------------------------------------------------
+complication_close <- rep(0, nrow(df_close))
+complication_hd <- c(1, rep(0, nrow(df_high_density) - 1))
+report_mean_ci_binary(complication_close)
+report_mean_ci_binary(complication_hd)
+
+prop.test(
+  x = c(sum(complication_close), sum(complication_hd)),
+  n = c(length(complication_close), length(complication_hd))
+)

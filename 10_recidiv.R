@@ -91,16 +91,32 @@ surv_obj <- Surv(time = df_recidiv$diff, event = df_recidiv$status)
 km_fit <- survfit(surv_obj ~ procedure_type, data = df_recidiv)
 
 # plot the Kaplan-Meier survival curves
-ggsurvplot(km_fit,
+surv_plot <- ggsurvplot(km_fit,
   data = df_recidiv, pval = TRUE,
   conf.int = TRUE,
   legend.title = "",
-  legend.labs = c("Close", "High density"),
-  xlab = "time (days)",
-  ylab = "recidiv probability",
+  legend.labs = c("CM group", "HD group"),
+  xlab = "Time (days)",
+  ylab = "Freedom from AF (%)",
   fun = "event"
 )
 
+# extract ggplot and flip the y-axis
+surv_plot$plot +
+  scale_y_reverse(
+    breaks = c(0, 0.25, 0.5, 0.75, 1.00),
+    labels = c(100, 75, 50, 25, 0)
+  )
+
+# save as a png
+ggsave(
+  "figs/km_recidiv.png",
+  width = 1920,
+  height = 1080,
+  dpi = 300,
+  units = "px",
+  bg = "white"
+)
 
 # plot survivability through time ----------------------------------------------
 n_close <- nrow(df_close)

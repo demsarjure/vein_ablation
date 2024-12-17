@@ -194,3 +194,15 @@ report_mean_ci(df_close$cha2ds2vasc)
 report_mean_ci(df_high_density$cha2ds2vasc)
 
 wilcox.test(df_close$cha2ds2vasc, df_high_density$cha2ds2vasc)
+
+
+# cied -------------------------------------------------------------------------
+cied_close <- c(1, rep(0, nrow(df_close) - 1))
+cied_hd <- c(1, rep(0, nrow(df_high_density) - 1))
+report_mean_ci_binary(cied_close)
+report_mean_ci_binary(cied_hd)
+
+prop.test(
+  x = c(sum(cied_close), sum(cied_hd)),
+  n = c(length(cied_close), length(cied_hd))
+)
