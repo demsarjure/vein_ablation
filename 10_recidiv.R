@@ -92,12 +92,13 @@ km_fit <- survfit(surv_obj ~ procedure_type, data = df_recidiv)
 
 # plot the Kaplan-Meier survival curves
 surv_plot <- ggsurvplot(km_fit,
-  data = df_recidiv, pval = TRUE,
+  data = df_recidiv,
+  pval = TRUE,
   conf.int = TRUE,
   legend.title = "",
   legend.labs = c("CM group", "HD group"),
   xlab = "Time (days)",
-  ylab = "Freedom from AF (%)",
+  ylab = "Freedom from arrhythmia recurrence (%)",
   fun = "event"
 )
 
@@ -117,6 +118,52 @@ ggsave(
   units = "px",
   bg = "white"
 )
+
+
+# KM for all -------------------------------------------------------------------
+df_all$diff <- df_all$recidiv - df_all$procedure_date
+
+df_km_all <- df_all %>%
+  select(procedure_type, diff)
+
+df_km_all$event <- ifelse(is.na(df_km_all$diff), 0, 1)
+
+# use max time + 1 for censored cases
+df_km_all$diff[is.na(df_km_all$diff)] <- max(df_km_all$diff, na.rm = TRUE) + 1
+
+surv_obj_all <- Surv(time = df_km_all$diff, event = df_km_all$event)
+km_all_fit <- survfit(surv_obj_all ~ procedure_type, data = df_km_all)
+
+surv_plot_all <- ggsurvplot(
+  km_all_fit,
+  data = df,
+  pval = TRUE,
+  conf.int = TRUE,
+  legend.title = "",
+  legend.labs = c("CM group", "HD group"),
+  xlab = "Time (days)",
+  ylab = "Freedom from arrhythmia recurrence (%)",
+  fun = "event"
+)
+
+# extract ggplot and flip the y-axis
+surv_plot_all$plot +
+  scale_y_reverse(
+    breaks = c(0, 0.25, 0.5, 0.75, 1.00),
+    labels = c(100, 75, 50, 25, 0),
+    limits = c(1, 0)
+  )
+
+# save as a png
+ggsave(
+  "figs/km_all.png",
+  width = 1920,
+  height = 1080,
+  dpi = 300,
+  units = "px",
+  bg = "white"
+)
+
 
 # plot survivability through time ----------------------------------------------
 n_close <- nrow(df_close)
@@ -175,7 +222,7 @@ df_survivability$group[df_survivability$group == "high_density"] <-
 # plot
 ggplot(df_survivability, aes(x = time, y = surv, color = group)) +
   geom_line(linewidth = 1) +
-  labs(x = "Time (days)", y = "Freedom from AF (%)") +
+  labs(x = "Time (days)", y = "Freedom from arrhythmia recurrence (%)") +
   scale_color_manual(values = c("grey25", "grey75")) +
   ylim(0, 100) +
   theme_minimal() +
