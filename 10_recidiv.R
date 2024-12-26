@@ -179,6 +179,8 @@ df_survivability <- data.frame(
   group = c("close", "high_density")
 )
 
+previous_close <- 100
+previous_high_density <- 100
 close_count <- 0
 high_density_count <- 0
 for (i in seq_len(n_recidiv)) {
@@ -193,6 +195,27 @@ for (i in seq_len(n_recidiv)) {
     surv <- 100 - 100 * (high_density_count / n_high_density)
   }
 
+  if (group == "close") {
+    df_survivability <- df_survivability %>%
+      add_row(
+        data.frame(
+          time = as.numeric(day),
+          surv = previous_close,
+          group = group
+        )
+      )
+  }
+  else if (group == "high_density") {
+    df_survivability <- df_survivability %>%
+      add_row(
+        data.frame(
+          time = as.numeric(day),
+          surv = previous_high_density,
+          group = group
+        )
+      )
+  }
+
   df_survivability <- df_survivability %>%
     add_row(
       data.frame(
@@ -201,6 +224,12 @@ for (i in seq_len(n_recidiv)) {
         group = group
       )
     )
+
+  if (group == "close") {
+    previous_close <- surv
+  } else {
+    previous_high_density <- surv
+  }
 }
 
 df_survivability <- df_survivability %>%
@@ -226,7 +255,8 @@ ggplot(df_survivability, aes(x = time, y = surv, color = group)) +
   scale_color_manual(values = c("grey25", "grey75")) +
   ylim(0, 100) +
   theme_minimal() +
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +
+  annotate("text", x = 350, y = 90, label = "p = 0.56", size = 5)
 
 # save as a png
 ggsave(
