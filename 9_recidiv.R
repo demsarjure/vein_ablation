@@ -36,6 +36,44 @@ df_all$had_recidiv <- ifelse(is.na(df_all$recidiv), 0, 1)
 # reconnected veins
 df_all$number_of_reconnected_veins <- 4 - df_all$number_of_isolated_veins
 
+# number of dormants
+df_all$number_of_dormants <- rowSums(
+  df_all[, c(
+    "dormant_rspv_rr",
+    "dormant_rspv_ra",
+    "dormant_rspv_rp",
+    "dormant_ripv_ra",
+    "dormant_ripv_rp",
+    "dormant_ripv_ri",
+    "dormant_lspv_lr",
+    "dormant_lspv_lrg",
+    "dormant_lspv_lp",
+    "dormant_lipv_la",
+    "dormant_lipv_li",
+    "dormant_lipv_lp"
+  )],
+  na.rm = TRUE
+)
+
+# drop indvidual dormant columns
+df_all <- df_all %>%
+  select(
+    -c(
+      dormant_rspv_rr,
+      dormant_rspv_ra,
+      dormant_rspv_rp,
+      dormant_ripv_ra,
+      dormant_ripv_rp,
+      dormant_ripv_ri,
+      dormant_lspv_lr,
+      dormant_lspv_lrg,
+      dormant_lspv_lp,
+      dormant_lipv_la,
+      dormant_lipv_li,
+      dormant_lipv_lp
+    )
+  )
+
 # to date, format is dd/mm/yyyy
 df_all$procedure_date <- as.Date(df_all$procedure_date, format = "%d/%m/%Y")
 df_all$recidiv <-
@@ -155,8 +193,7 @@ for (i in seq_len(n_recidiv)) {
           group = group
         )
       )
-  }
-  else if (group == "high_density") {
+  } else if (group == "high_density") {
     df_survivability <- df_survivability %>%
       add_row(
         data.frame(
@@ -218,3 +255,99 @@ ggsave(
   units = "px",
   bg = "white"
 )
+
+
+# recidiv vs no recidiv --------------------------------------------------------
+# is there a difference in the number of reconnected veins given recidiv -------
+df_rv <- df_all %>%
+  select(procedure_type, number_of_reconnected_veins, had_recidiv)
+df_rv <- drop_na(df_rv)
+df_recidiv_rv <- df_rv %>% filter(had_recidiv == 1)
+df_no_recidiv_rv <- df_rv %>% filter(had_recidiv == 0)
+
+recidiv_rv <- df_recidiv_rv$number_of_reconnected_veins
+report_mean_ci(recidiv_rv)
+
+no_recidiv_rv <- df_no_recidiv_rv$number_of_reconnected_veins
+report_mean_ci(no_recidiv_rv)
+
+wilcox.test(recidiv_rv, no_recidiv_rv)
+
+# recidiv + number of reconnected veins (cm vs hd) -----------------------------
+recidiv_rv_cm <- df_recidiv_rv %>%
+  filter(procedure_type == "close")
+recidiv_rv_cm <- recidiv_rv_cm$number_of_reconnected_veins
+report_mean_ci(recidiv_rv_cm)
+
+recidiv_rv_hd <- df_recidiv_rv %>%
+  filter(procedure_type == "high_density")
+recidiv_rv_hd <- recidiv_rv_hd$number_of_reconnected_veins
+report_mean_ci(recidiv_rv_hd)
+
+wilcox.test(recidiv_rv_cm, recidiv_rv_hd)
+
+# is there a difference in the number of dormants given recidiv ----------------
+df_d <- df_all %>%
+  select(procedure_type, number_of_dormants, had_recidiv)
+df_d <- drop_na(df_d)
+df_recidiv_d <- df_d %>% filter(had_recidiv == 1)
+df_no_recidiv_d <- df_d %>% filter(had_recidiv == 0)
+
+recidiv_d <- df_recidiv_d$number_of_dormants
+report_mean_ci(recidiv_d)
+
+no_recidiv_d <- df_no_recidiv_d$number_of_dormants
+report_mean_ci(no_recidiv_d)
+
+wilcox.test(recidiv_d, no_recidiv_d)
+
+# recidiv + number of dormants (cm vs hd) --------------------------------------
+recidiv_d_cm <- df_recidiv_d %>%
+  filter(procedure_type == "close")
+recidiv_d_cm <- recidiv_d_cm$number_of_dormants
+report_mean_ci(recidiv_d_cm)
+
+recidiv_d_hd <- df_recidiv_d %>%
+  filter(procedure_type == "high_density")
+recidiv_d_hd <- recidiv_d_hd$number_of_dormants
+report_mean_ci(recidiv_d_hd)
+
+wilcox.test(recidiv_d_cm, recidiv_d_hd)
+
+# is there a difference in reconnected veins + dormants given recidiv ----------
+df_rv_d <- df_all %>%
+  select(
+    procedure_type,
+    number_of_reconnected_veins,
+    number_of_dormants,
+    had_recidiv
+  )
+df_rv_d$rv_d <-
+  df_rv_d$number_of_reconnected_veins +
+  df_rv_d$number_of_dormants
+df_rv_d <- df_rv_d %>%
+  select(procedure_type, rv_d, had_recidiv)
+df_rv_d <- drop_na(df_rv_d)
+df_recidiv_rv_d <- df_rv_d %>% filter(had_recidiv == 1)
+df_no_recidiv_rv_d <- df_rv_d %>% filter(had_recidiv == 0)
+
+recidiv_rv_d <- df_recidiv_rv_d$rv_d
+report_mean_ci(recidiv_rv_d)
+
+no_recidiv_rv_d <- df_no_recidiv_rv_d$rv_d
+report_mean_ci(no_recidiv_rv_d)
+
+wilcox.test(recidiv_rv_d, no_recidiv_rv_d)
+
+# recidiv + (number of reconnected veins + dormants) (cm vs hd) ----------------
+recidiv_rv_d_cm <- df_recidiv_rv_d %>%
+  filter(procedure_type == "close")
+recidiv_rv_d_cm <- recidiv_rv_d_cm$rv_d
+report_mean_ci(recidiv_rv_d_cm)
+
+recidiv_rv_d_hd <- df_recidiv_rv_d %>%
+  filter(procedure_type == "high_density")
+recidiv_rv_d_hd <- recidiv_rv_d_hd$rv_d
+report_mean_ci(recidiv_rv_d_hd)
+
+wilcox.test(recidiv_rv_d_cm, recidiv_rv_d_hd)
