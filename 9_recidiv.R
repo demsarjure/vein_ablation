@@ -351,3 +351,79 @@ recidiv_rv_d_hd <- recidiv_rv_d_hd$rv_d
 report_mean_ci(recidiv_rv_d_hd)
 
 wilcox.test(recidiv_rv_d_cm, recidiv_rv_d_hd)
+
+# HD recidiv vs HD no recidiv rv -----------------------------------------------
+hd_recidiv_rv <- df_recidiv_rv %>% filter(procedure_type == "high_density")
+hd_recidiv_rv <- hd_recidiv_rv$number_of_reconnected_veins
+report_mean_ci(hd_recidiv_rv)
+
+hd_no_recidiv_rv <- df_no_recidiv_rv %>%
+  filter(procedure_type == "high_density")
+hd_no_recidiv_rv <- hd_no_recidiv_rv$number_of_reconnected_veins
+report_mean_ci(hd_no_recidiv_rv)
+
+wilcox.test(hd_recidiv_rv, hd_no_recidiv_rv)
+
+# HD recidiv vs HD no recidiv d ------------------------------------------------
+hd_recidiv_d <- df_recidiv_d %>%
+  filter(procedure_type == "high_density")
+hd_recidiv_d <- hd_recidiv_d$number_of_dormants
+report_mean_ci(hd_recidiv_d)
+
+hd_no_recidiv_d <- df_no_recidiv_d %>%
+  filter(procedure_type == "high_density")
+hd_no_recidiv_d <- hd_no_recidiv_d$number_of_dormants
+report_mean_ci(hd_no_recidiv_d)
+
+wilcox.test(hd_recidiv_d, hd_no_recidiv_d)
+
+# HD recidiv vs HD no recidiv rv_d ---------------------------------------------
+hd_recidiv_rv_d <- df_recidiv_rv_d %>%
+  filter(procedure_type == "high_density")
+hd_recidiv_rv_d <- hd_recidiv_rv_d$rv_d
+report_mean_ci(hd_recidiv_rv_d)
+
+hd_no_recidiv_rv_d <- df_no_recidiv_rv_d %>%
+  filter(procedure_type == "high_density")
+hd_no_recidiv_rv_d <- hd_no_recidiv_rv_d$rv_d
+report_mean_ci(hd_no_recidiv_rv_d)
+
+wilcox.test(hd_recidiv_rv_d, hd_no_recidiv_rv_d)
+
+# CM recidiv vs CM no recidiv rv -----------------------------------------------
+cm_recidiv_rv <- df_recidiv_rv %>% filter(procedure_type == "close")
+cm_recidiv_rv <- cm_recidiv_rv$number_of_reconnected_veins
+report_mean_ci(cm_recidiv_rv)
+
+cm_no_recidiv_rv <- df_no_recidiv_rv %>%
+  filter(procedure_type == "close")
+cm_no_recidiv_rv <- cm_no_recidiv_rv$number_of_reconnected_veins
+report_mean_ci(cm_no_recidiv_rv)
+
+wilcox.test(cm_recidiv_rv, cm_no_recidiv_rv)
+
+# CM recidiv vs CM no recidiv d ------------------------------------------------
+cm_recidiv_d <- df_recidiv_d %>%
+  filter(procedure_type == "close")
+cm_recidiv_d <- cm_recidiv_d$number_of_dormants
+report_mean_ci(cm_recidiv_d)
+
+cm_no_recidiv_d <- df_no_recidiv_d %>%
+  filter(procedure_type == "close")
+cm_no_recidiv_d <- cm_no_recidiv_d$number_of_dormants
+report_mean_ci(cm_no_recidiv_d)
+
+wilcox.test(cm_recidiv_d, cm_no_recidiv_d)
+
+# CM recidiv vs CM no recidiv rv_d ---------------------------------------------
+cm_recidiv_rv_d <- df_recidiv_rv_d %>%
+  filter(procedure_type == "close")
+cm_recidiv_rv_d <- cm_recidiv_rv_d$rv_d
+report_mean_ci(cm_recidiv_rv_d)
+
+cm_no_recidiv_rv_d <- df_no_recidiv_rv_d %>%
+  filter(procedure_type == "close")
+cm_no_recidiv_rv_d <- cm_no_recidiv_rv_d$rv_d
+report_mean_ci(cm_no_recidiv_rv_d)
+
+wilcox.test(cm_recidiv_rv_d, cm_no_recidiv_rv_d)
