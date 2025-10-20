@@ -285,7 +285,7 @@ df_corners_si <- df_survivability_si %>%
 # add nudge values based on group
 df_corners_si <- df_corners_si %>%
   mutate(
-    nudge_x = ifelse(group == "CM skupina", 7, -7),
+    nudge_x = ifelse(group == "CM skupina", 10, -10),
     nudge_y = ifelse(group == "CM skupina", 3, 0)
   )
 
