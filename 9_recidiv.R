@@ -165,7 +165,8 @@ df_recidiv <- df_recidiv[order(df_recidiv$diff), ]
 df_survivability <- data.frame(
   time = c(0, 0),
   surv = c(100, 100),
-  group = c("close", "high_density")
+  group = c("close", "high_density"),
+  n_patients = c(n_close, n_high_density)
 )
 
 previous_close <- 100
@@ -179,9 +180,11 @@ for (i in seq_len(n_recidiv)) {
   if (group == "close") {
     close_count <- close_count + 1
     surv <- 100 - 100 * (close_count / n_close)
+    n_patients <- n_close - close_count
   } else {
     high_density_count <- high_density_count + 1
     surv <- 100 - 100 * (high_density_count / n_high_density)
+    n_patients <- n_high_density - high_density_count
   }
 
   if (group == "close") {
@@ -190,7 +193,8 @@ for (i in seq_len(n_recidiv)) {
         data.frame(
           time = as.numeric(day),
           surv = previous_close,
-          group = group
+          group = group,
+          n_patients = n_close - close_count + 1
         )
       )
   } else if (group == "high_density") {
@@ -199,7 +203,8 @@ for (i in seq_len(n_recidiv)) {
         data.frame(
           time = as.numeric(day),
           surv = previous_high_density,
-          group = group
+          group = group,
+          n_patients = n_high_density - high_density_count + 1
         )
       )
   }
@@ -209,7 +214,8 @@ for (i in seq_len(n_recidiv)) {
       data.frame(
         time = as.numeric(day),
         surv = surv,
-        group = group
+        group = group,
+        n_patients = n_patients
       )
     )
 
@@ -226,7 +232,8 @@ df_survivability <- df_survivability %>%
       time = max(df_survivability$time),
       surv =
         min(df_survivability$surv[df_survivability$group == "high_density"]),
-      group = "high_density"
+      group = "high_density",
+      n_patients = n_high_density - high_density_count
     )
   )
 
@@ -256,6 +263,57 @@ ggsave(
   bg = "white"
 )
 
+# plot slovenian
+df_survivability_si <- df_survivability %>%
+  mutate(
+    group = recode(
+      group,
+      "CM group" = "CM skupina",
+      "HD group" = "HD skupina"
+    )
+  )
+
+# identify corner points (vertical drops where surv changes or starting points)
+df_corners_si <- df_survivability_si %>%
+  group_by(group) %>%
+  mutate(
+    surv_changed = surv != lag(surv, default = -999)
+  ) %>%
+  filter(surv_changed) %>%
+  ungroup()
+
+# add nudge values based on group
+df_corners_si <- df_corners_si %>%
+  mutate(
+    nudge_x = ifelse(group == "CM skupina", 7, -7),
+    nudge_y = ifelse(group == "CM skupina", 3, 0)
+  )
+
+ggplot(df_survivability_si, aes(x = time, y = surv, color = group)) +
+  geom_line(linewidth = 1) +
+  geom_text(
+    data = df_corners_si,
+    aes(label = n_patients, x = time + nudge_x, y = surv + nudge_y),
+    size = 3,
+    fontface = "bold",
+    show.legend = FALSE
+  ) +
+  labs(x = "Čas (dnevi)", y = "Odsotnost ponovitve aritmije (%)") +
+  scale_color_manual(values = c("grey25", "grey75")) +
+  scale_y_continuous(limits = c(0, 110), breaks = c(0, 25, 50, 75, 100)) +
+  theme_minimal() +
+  theme(legend.title = element_blank()) +
+  annotate("text", x = 350, y = 90, label = "p = 0.56", size = 5)
+
+# save as a png
+ggsave(
+  "figs/recidiv_si.png",
+  width = 1920,
+  height = 1080,
+  dpi = 300,
+  units = "px",
+  bg = "white"
+)
 
 # recidiv vs no recidiv --------------------------------------------------------
 # is there a difference in the number of reconnected veins given recidiv -------
