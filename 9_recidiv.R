@@ -273,27 +273,30 @@ df_survivability_si <- df_survivability %>%
     )
   )
 
-# identify corner points (vertical drops where surv changes or starting points)
+# create points at regular x intervals (every 20 from 0 to 440)
+x_points <- seq(0, 440, by = 20)
+
+# for missing values, use the last known n_patients (carry forward)
 df_corners_si <- df_survivability_si %>%
   group_by(group) %>%
-  mutate(
-    surv_changed = surv != lag(surv, default = -999)
-  ) %>%
-  filter(surv_changed) %>%
-  ungroup()
+  arrange(time) %>%
+  complete(time = x_points) %>%
+  fill(n_patients, .direction = "down") %>%
+  filter(time %in% x_points) %>%
+  ungroup() %>%
+  distinct(group, time, .keep_all = TRUE)
 
-# add nudge values based on group
+# add fixed y positions based on group
 df_corners_si <- df_corners_si %>%
   mutate(
-    nudge_x = ifelse(group == "CM skupina", 10, -10),
-    nudge_y = ifelse(group == "CM skupina", 3, 0)
+    y_pos = ifelse(group == "CM skupina", 58, 52)
   )
 
 ggplot(df_survivability_si, aes(x = time, y = surv, color = group)) +
   geom_line(linewidth = 1) +
   geom_text(
     data = df_corners_si,
-    aes(label = n_patients, x = time + nudge_x, y = surv + nudge_y),
+    aes(label = n_patients, x = time, y = y_pos),
     size = 3,
     fontface = "bold",
     show.legend = FALSE
@@ -303,14 +306,18 @@ ggplot(df_survivability_si, aes(x = time, y = surv, color = group)) +
   scale_y_continuous(limits = c(0, 110), breaks = c(0, 25, 50, 75, 100)) +
   theme_minimal() +
   theme(legend.title = element_blank()) +
-  annotate("text", x = 350, y = 90, label = "p = 0.56", size = 5)
+  annotate("text", x = 350, y = 90, label = "p = 0.56", size = 5) +
+  annotate("text",
+    x = -5, y = 46, label = "Bolniki brez ponovitve aritmije",
+    hjust = 0, size = 3.5
+  )
 
 # save as a png
 ggsave(
   "figs/recidiv_si.png",
   width = 1920,
   height = 1080,
-  dpi = 300,
+  dpi = 200,
   units = "px",
   bg = "white"
 )
