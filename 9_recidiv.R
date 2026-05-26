@@ -276,21 +276,29 @@ df_survivability_si <- df_survivability %>%
 # create points at regular x intervals (every 20 from 0 to 440)
 x_points <- seq(0, 440, by = 20)
 
-# for missing values, use the last known n_patients (carry forward)
+# for each x_point, carry forward the last known n_patients (step function)
 df_corners_si <- df_survivability_si %>%
   group_by(group) %>%
   arrange(time) %>%
-  complete(time = x_points) %>%
-  fill(n_patients, .direction = "down") %>%
-  filter(time %in% x_points) %>%
+  group_modify(~ {
+    d_last <- .x %>%
+      group_by(time) %>%
+      slice_tail(n = 1) %>%
+      ungroup()
+    tibble(
+      time = x_points,
+      n_patients = approx(
+        x = d_last$time,
+        y = d_last$n_patients,
+        xout = x_points,
+        method = "constant",
+        f = 0,
+        rule = 2
+      )$y
+    )
+  }) %>%
   ungroup() %>%
-  distinct(group, time, .keep_all = TRUE)
-
-# add fixed y positions based on group
-df_corners_si <- df_corners_si %>%
-  mutate(
-    y_pos = ifelse(group == "CM skupina", 58, 52)
-  )
+  mutate(y_pos = ifelse(group == "CM skupina", 58, 52))
 
 ggplot(df_survivability_si, aes(x = time, y = surv, color = group)) +
   geom_line(linewidth = 1) +
